@@ -410,8 +410,6 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            max-width: 350px;
-            width: 100%;
         }
 
         .project-card:hover {
@@ -553,68 +551,6 @@
                 transform: translateY(0);
             }
         }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            animation: modalSlideIn 0.3s ease-out;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            line-height: 1;
-        }
-
-        .modal-close:hover {
-            color: #000;
-        }
-
-        body.dark-mode .modal-content {
-            background-color: #1e293b;
-            color: #f9fafb;
-        }
-
-        body.dark-mode .modal-close {
-            color: #d1d5db;
-        }
-
-        body.dark-mode .modal-close:hover {
-            color: #f9fafb;
-        }
     </style>
 </head>
 <body>
@@ -704,83 +640,53 @@
     <div id="portfolio" class="page">
         <div class="page-content">
             <h2 class="page-title">Portfolio</h2>
-            
-            <!-- Projects Section -->
-            <h3 style="font-size: 2rem; margin-bottom: 2rem; color: #1f2937; text-align: center;">Projects</h3>
             <div class="projects-grid">
                 <div class="project-card">
-                    <div class="project-image">
-                        <img src="factr icon.png" alt="factr logo" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
-                    </div>
+                    <div class="project-image">Project Screenshot</div>
                     <div class="project-content">
-                        <h4>factr</h4>
-                        <p>Reduced misinformation detection false negatives by ~20% over unimodal baselines by developing a multimodal AI pipeline cross-validating BERT, CLIP, and AudioSet models. Deployed scalable FastAPI service on Azure with Docker integration.</p>
-                        <a href="https://github.com/elu139/factr" target="_blank" class="project-link">View Project →</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="investment_management.jpg" alt="Investment Management Club logo" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
-                    </div>
-                    <div class="project-content">
-                        <h4>Investment Portfolio Scoring Framework</h4>
-                        <p>Delivered interpretable 0–1 scaled growth potential and market impact scores for companies in a simulated $100K portfolio. Built data pipelines using Gaussian Mixture Models and real-time financial metrics from FinancialModelingPrep API.</p>
-                        <a href="#" class="project-link" onclick="showInvestmentModal(event)">View Project →</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="tanaka.webp" alt="Premier League Analysis" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
-                    </div>
-                    <div class="project-content">
-                        <h4>Premier League Transfer Analysis</h4>
-                        <p>Determined that investing in fewer, high-impact rather than many, low-impact players correlated with higher league survival rates. Analyzed ~500 transfer records (2008–2024) from 75K+ entries using BeautifulSoup, Seaborn, and Matplotlib.</p>
-                        <a href="https://github.com/elu139/SportsAnalysis" target="_blank" class="project-link">View Project →</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="seniorcenter.png" alt="Senior Center Application" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
-                    </div>
-                    <div class="project-content">
-                        <h4>Senior Home Sign-In Application</h4>
-                        <p>Improved accuracy and efficiency of daily resident and visitor log management at a local senior community. Developed Python-based application with accessible Tkinter interface tailored for elderly users and JSON-based data storage.</p>
-                        <a href="https://github.com/elu139/SeniorHomeApp" target="_blank" class="project-link">View Project →</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="climate_reality.png" alt="Climate Reality Project logo" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
-                    </div>
-                    <div class="project-content">
-                        <h4>The Climate Reality Project</h4>
-                        <p>Expanded access to 100+ climate education resources integrated into curricula of 15 local schools and libraries. Developed searchable HTML/CSS/JavaScript website with TinyMCE rich text editor for real-time content publishing.</p>
-                        <a href="#" class="project-link" onclick="showClimateModal(event)">View Project →</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="m3.png" alt="MathWorks Math Modeling Challenge" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
-                    </div>
-                    <div class="project-content">
-                        <h4>Homelessness Prediction Model</h4>
-                        <p>Achieved 0.86 AUC predictive accuracy in forecasting homelessness trends in U.S. cities. Developed binomial logistic growth model to analyze complex socioeconomic datasets using Pandas and MATLAB for MathWorks Math Modeling Challenge.</p>
+                        <h4>E-Commerce Platform</h4>
+                        <p>A full-stack e-commerce solution built with React and Node.js. Features include user authentication, payment processing, inventory management, and responsive design.</p>
                         <a href="#" class="project-link">View Project →</a>
                     </div>
                 </div>
-            </div>
-
-            <!-- Experience Section -->
-            <h3 style="font-size: 2rem; margin: 4rem 0 2rem 0; color: #1f2937; text-align: center;">Experience</h3>
-            <div class="projects-grid">
                 <div class="project-card">
-                    <div class="project-image">
-                        <img src="c21u.jpg" alt="C21U Lab" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
-                    </div>
+                    <div class="project-image">Project Screenshot</div>
                     <div class="project-content">
-                        <h4>Data-Driven Education at C21U Lab</h4>
-                        <p>Increased scalability of model training by generating synthetic dataset with ~90% statistical similarity using OpenAI's o1 model. Built React dashboard with pyLDAvis visualizations and developing BERT-based classifier for cognitive presence categories.</p>
-                        <a href="#" class="project-link" onclick="showC21uModal(event)">View Experience →</a>
+                        <h4>Task Management App</h4>
+                        <p>A productivity application with real-time collaboration features. Built using modern web technologies with a focus on user experience and performance.</p>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">Project Screenshot</div>
+                    <div class="project-content">
+                        <h4>Data Visualization Dashboard</h4>
+                        <p>An interactive dashboard for analyzing complex datasets. Features dynamic charts, real-time updates, and customizable views for different user roles.</p>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">Project Screenshot</div>
+                    <div class="project-content">
+                        <h4>Mobile Weather App</h4>
+                        <p>A cross-platform mobile application providing detailed weather forecasts with location-based services and push notifications.</p>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">Project Screenshot</div>
+                    <div class="project-content">
+                        <h4>Social Media Analytics</h4>
+                        <p>A comprehensive analytics platform for social media managers to track engagement, analyze trends, and generate detailed reports.</p>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">Project Screenshot</div>
+                    <div class="project-content">
+                        <h4>AI-Powered Chatbot</h4>
+                        <p>An intelligent customer service chatbot integrated with natural language processing capabilities and machine learning algorithms.</p>
+                        <a href="#" class="project-link">View Project →</a>
                     </div>
                 </div>
             </div>
@@ -835,36 +741,6 @@
                     <h4>Database Design</h4>
                     <p>Designing efficient data structures with SQL and NoSQL databases like PostgreSQL and MongoDB</p>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Climate Reality Modal -->
-    <div id="climateModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeClimateModal()">&times;</span>
-            <h3 style="margin-bottom: 1rem; color: #1f2937;">The Climate Reality Project</h3>
-            <p>I was involved in the development of the Climate Reality Project's youth chapter in New Jersey website during high school. Unfortunately, due to external factors, the website and codebase have since been shut down.</p>
-        </div>
-    </div>
-
-    <!-- Investment Management Modal -->
-    <div id="investmentModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeInvestmentModal()">&times;</span>
-            <h3 style="margin-bottom: 1rem; color: #1f2937;">Investment Portfolio Scoring Framework</h3>
-            <p>The Investment Management Club at Georgia Tech currently employs private usage and sharing of its financial models.</p>
-        </div>
-    </div>
-
-    <!-- C21U Lab Modal -->
-    <div id="c21uModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeC21uModal()">&times;</span>
-            <h3 style="margin-bottom: 1rem; color: #1f2937;">Data-Driven Education at C21U Lab</h3>
-            <p>I was involved as the lead ML+Data Engineer of the Discussion Forums subteam, who sought to leverage Georgia Tech's EdStem course data to improve instructors' abilities to understand students' comments and concerns. The codebase is restricted within GT's GitHub Enterprise due to the research's use of PII data. Below is a poster presentation of what my team accomplished that I presented at the Undergraduate Research Symposium in April 2025.</p>
-            <div style="margin-top: 1.5rem;">
-                <a href="DDE_UROP_Apr2025.pdf" target="_blank" style="color: #003057; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border: 2px solid #003057; border-radius: 8px; display: inline-block; transition: all 0.3s ease;">Poster</a>
             </div>
         </div>
     </div>
@@ -988,53 +864,6 @@
                 nav.style.boxShadow = 'none';
             }
         });
-
-        // Climate Reality Project modal functions
-        function showClimateModal(event) {
-            event.preventDefault();
-            document.getElementById('climateModal').style.display = 'block';
-        }
-
-        function closeClimateModal() {
-            document.getElementById('climateModal').style.display = 'none';
-        }
-
-        // Investment Management modal functions
-        function showInvestmentModal(event) {
-            event.preventDefault();
-            document.getElementById('investmentModal').style.display = 'block';
-        }
-
-        function closeInvestmentModal() {
-            document.getElementById('investmentModal').style.display = 'none';
-        }
-
-        // C21U Lab modal functions
-        function showC21uModal(event) {
-            event.preventDefault();
-            document.getElementById('c21uModal').style.display = 'block';
-        }
-
-        function closeC21uModal() {
-            document.getElementById('c21uModal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            const climateModal = document.getElementById('climateModal');
-            const investmentModal = document.getElementById('investmentModal');
-            const c21uModal = document.getElementById('c21uModal');
-            
-            if (event.target === climateModal) {
-                climateModal.style.display = 'none';
-            }
-            if (event.target === investmentModal) {
-                investmentModal.style.display = 'none';
-            }
-            if (event.target === c21uModal) {
-                c21uModal.style.display = 'none';
-            }
-        }
     </script>
 </body>
 </html>
