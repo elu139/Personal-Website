@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethan - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'Handwriting';
+            src: url('handwriting.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'EthanSans';
+            src: url('Ethansans-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #EEEAE3;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .home-icon {
+            color: #B3A369;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .home-icon:hover {
+            color: #8B7355;
+            background: rgba(179, 163, 105, 0.1);
+        }
+
+        .home-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .nav-links a.active {
+            color: #B3A369;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #B3A369;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-icon {
+            color: #333;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-icon:hover {
+            color: #B3A369;
+            background: rgba(179, 163, 105, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            color: #333;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .theme-toggle:hover {
+            color: #B3A369;
+            background: rgba(179, 163, 105, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: #0f172a;
+            color: #f8fafc;
+        }
+
+        body.dark-mode nav {
+            background: rgba(30, 41, 59, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .nav-links a {
+            color: #f9fafb;
+        }
+
+        body.dark-mode .nav-icon,
+        body.dark-mode .theme-toggle {
+            color: #f9fafb;
+        }
+
+        body.dark-mode .page-title {
+            color: #f9fafb;
+        }
+
+        body.dark-mode .about-text h3 {
+            color: #f9fafb;
+        }
+
+        body.dark-mode .about-text p {
+            color: #d1d5db;
+        }
+
+        body.dark-mode .project-card {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .project-content h4 {
+            color: #f9fafb;
+        }
+
+        body.dark-mode .project-content p {
+            color: #d1d5db;
+        }
+
+        body.dark-mode .project-link {
+            color: #FFFFFF;
+        }
+
+        body.dark-mode .project-link:hover {
+            color: #B3A369;
+        }
+
+        body.dark-mode #portfolio h3 {
+            color: #FFFFFF;
+        }
+
+        body.dark-mode #playground p {
+            color: #FFFFFF !important;
+        }
+
+        body.dark-mode #font-download-link {
+            color: #B3A369 !important;
+        }
+
+        body.dark-mode .skill-card {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .skill-card h4 {
+            color: #f9fafb;
+        }
+
+        body.dark-mode .skill-card p {
+            color: #d1d5db;
+        }
+
+        /* Page Container */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Home Page Styles */
+        #home {
+            padding-top: 0;
+            min-height: 0;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #003057 0%, #B3A369 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="25" cy="25" r="2" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="3" fill="white" opacity="0.1"/><circle cx="10" cy="80" r="1" fill="white" opacity="0.1"/><circle cx="90" cy="20" r="2" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-20px) translateX(10px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'EthanSans', cursive;
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-family: 'EthanSans', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Page Content Styles */
+        .page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1f2937;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #003057, #B3A369);
+            border-radius: 2px;
+        }
+
+        /* About Page Styles */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .about-image {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #003057 0%, #B3A369 100%);
+            border-radius: 20px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image-secondary {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #003057 0%, #B3A369 100%);
+            border-radius: 20px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: #6b7280;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Portfolio Page Styles */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, #003057 0%, #B3A369 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h4 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .project-content p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-link {
+            color: #003057;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: #B3A369;
+        }
+
+        /* Playground Page Styles */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        #playground .skills-grid {
+            grid-template-columns: 200px;
+            justify-content: start;
+        }
+
+        .skill-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #003057, #B3A369);
+            border-radius: 15px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .skill-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        body.home-page footer {
+            margin-top: 0;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-right {
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+            
+            .nav-icons {
+                gap: 0.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Page transition animations */
+        .page {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #000;
+        }
+
+        body.dark-mode .modal-content {
+            background-color: #1e293b;
+            color: #f9fafb;
+        }
+
+        body.dark-mode .modal-close {
+            color: #d1d5db;
+        }
+
+        body.dark-mode .modal-close:hover {
+            color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="home-page">
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="home-icon" onclick="showPage('home')">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </a>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showPage('about')">About</a></li>
+                    <li><a href="#" onclick="showPage('portfolio')">Portfolio</a></li>
+                    <li><a href="#" onclick="showPage('playground')">Playground</a></li>
+                </ul>
+                <div class="nav-icons">
+                    <a href="LuEthan-Resume.pdf" target="_blank" class="nav-icon" title="Resume">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                    </a>
+                    <a href="mailto:ethanlu0929@gmail.com" class="nav-icon" title="Email">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/elu139" target="_blank" class="nav-icon" title="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ethan-lu/" target="_blank" class="nav-icon" title="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M18.5 18.5V13.2A3.26 3.26 0 0 0 15.24 9.94C14.39 9.94 13.4 10.46 12.92 11.24V10.13H10.13V18.5H12.92V13.57C12.92 12.8 13.54 12.17 14.31 12.17A1.4 1.4 0 0 1 15.71 13.57V18.5H18.5M6.88 8.56A1.68 1.68 0 0 0 8.56 6.88C8.56 5.95 7.81 5.19 6.88 5.19A1.69 1.69 0 0 0 5.19 6.88C5.19 7.81 5.95 8.56 6.88 8.56M8.27 18.5V10.13H5.5V18.5H8.27Z"/>
+                        </svg>
+                    </a>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme" id="theme-toggle">
+                        <svg id="sun-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z"/>
+                        </svg>
+                        <svg id="moon-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                            <path d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.4 6.35,17.41C9.37,20.43 14,20.54 17.33,17.97Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Hey, I'm Ethan!</h1>
+                <p>"Be present above all else." (Naval Ravikant)</p>
+                <a href="#" class="cta-button" onclick="showPage('portfolio')">View My Work</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <div class="page-content">
+            <h2 class="page-title">About Me</h2>
+            <div class="about-content">
+                <div>
+                    <div class="about-image">
+                        <img src="IMG_2180.jpg" alt="Ethan Lu" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                    </div>
+                    <div class="about-image-secondary">
+                        <img src="20250707_174546_E4C9DF.JPEG" alt="Ethan Lu in Prague" style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%; border-radius: 20px;">
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h3>Computer Science Student & Future Builder</h3>
+                    <p>Hello! I'm a 2nd Year Computer Science student at Georgia Tech with a deep fascination for building our future through data science, AI, and other miscellaneous tech media. What piques my interest in computer science is the opportunity to bridge the liminal space between "no longer" and "not yet" — bringing our stories, aspirations, and dreams to life through code. I've chosen a path of innovation that optimizes human experience, streamlines everyday activities, and empowers people to achieve their goals.</p>
+                    <p>My approach to development is guided by being gritty, adaptable, and human (I'm not a robot!). I've had the privilege of working across various domains — from education technology to climate awareness platforms — always with the goals of enhancing user experiences and creating measurable impact.</p>
+                    <p>When I'm AFK, you'll find me staying active through playing and watching soccer (go Leeds! #LUFC), tennis, ping pong, or running (I ran the 2025 Publix Atlanta Marathon). I also love traveling and immersing myself in new cultures, and I've recently discovered a passion for cooking — just ask any of my friends about my tiramisu. My long-term vision is to position myself where I can build empowering technology that makes a positive difference in people's lives and contributes to a better future for everyone.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Page -->
+    <div id="portfolio" class="page">
+        <div class="page-content">
+            <h2 class="page-title">Portfolio</h2>
+            
+            <!-- Projects Section -->
+            <h3 style="font-size: 2rem; margin-bottom: 2rem; color: #1f2937; text-align: center;">Projects</h3>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="factr icon.png" alt="factr logo" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="project-content">
+                        <h4>factr</h4>
+                        <p>Reduced misinformation detection false negatives by ~20% over unimodal baselines by developing a multimodal AI pipeline cross-validating BERT, CLIP, and AudioSet models. Deployed scalable FastAPI service on Azure with Docker integration.</p>
+                        <a href="https://github.com/elu139/factr" target="_blank" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="investment_management.jpg" alt="Investment Management Club logo" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="project-content">
+                        <h4>Investment Portfolio Scoring Framework</h4>
+                        <p>Delivered interpretable 0–1 scaled growth potential and market impact scores for companies in a simulated $100K portfolio. Built data pipelines using Gaussian Mixture Models and real-time financial metrics from FinancialModelingPrep API.</p>
+                        <a href="#" class="project-link" onclick="showInvestmentModal(event)">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="tanaka.webp" alt="Premier League Analysis" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="project-content">
+                        <h4>Premier League Transfer Analysis</h4>
+                        <p>Determined that investing in fewer, high-impact rather than many, low-impact players correlated with higher league survival rates. Analyzed ~500 transfer records (2008–2024) from 75K+ entries using BeautifulSoup, Seaborn, and Matplotlib.</p>
+                        <a href="https://github.com/elu139/SportsAnalysis" target="_blank" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="seniorcenter.png" alt="Senior Center Application" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="project-content">
+                        <h4>Senior Home Sign-In Application</h4>
+                        <p>Improved accuracy and efficiency of daily resident and visitor log management at a local senior community. Developed Python-based application with accessible Tkinter interface tailored for elderly users and JSON-based data storage.</p>
+                        <a href="https://github.com/elu139/SeniorHomeApp" target="_blank" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="climate_reality.png" alt="Climate Reality Project logo" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="project-content">
+                        <h4>The Climate Reality Project</h4>
+                        <p>Expanded access to 100+ climate education resources integrated into curricula of 15 local schools and libraries. Developed searchable HTML/CSS/JavaScript website with TinyMCE rich text editor for real-time content publishing.</p>
+                        <a href="#" class="project-link" onclick="showClimateModal(event)">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="m3.png" alt="MathWorks Math Modeling Challenge" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="project-content">
+                        <h4>Homelessness Prediction Model</h4>
+                        <p>Achieved 0.86 AUC predictive accuracy in forecasting homelessness trends in U.S. cities. Developed binomial logistic growth model to analyze complex socioeconomic datasets using Pandas and MATLAB for MathWorks Math Modeling Challenge.</p>
+                        <a href="Solution%20Paper%20Team%20%2317395.pdf" target="_blank" class="project-link">View Project →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experience Section -->
+            <h3 style="font-size: 2rem; margin: 4rem 0 2rem 0; color: #1f2937; text-align: center;">Experience</h3>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="c21u.jpg" alt="C21U Lab" style="width: 100%; height: 100%; object-fit: contain; padding: 20px;">
+                    </div>
+                    <div class="project-content">
+                        <h4>Data-Driven Education at C21U Lab</h4>
+                        <p>Increased scalability of model training by generating synthetic dataset with ~90% statistical similarity using OpenAI's o1 model. Built React dashboard with pyLDAvis visualizations and developing BERT-based classifier for cognitive presence categories.</p>
+                        <a href="#" class="project-link" onclick="showC21uModal(event)">View Experience →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Playground Page -->
+    <div id="playground" class="page">
+        <div class="page-content">
+            <h2 class="page-title">Playground</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #6b7280; margin-bottom: 3rem;">
+                Welcome to my play—initiate-deliberate-innovate-cultivate-evaluate-contemplate-iterate-validate—ground, or mostly just my playground.
+            </p>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h4 style="font-family: 'EthanSans', sans-serif; font-size: 1.6rem;">My Font</h4>
+                    <p style="font-family: 'EthanSans', sans-serif; font-size: 1.3rem;">Click <a href="Ethansans-Regular.ttf" download style="color: #003057; text-decoration: underline; font-family: 'EthanSans', sans-serif;" id="font-download-link">here</a> to download a copy of my handwriting!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Climate Reality Modal -->
+    <div id="climateModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeClimateModal()">&times;</span>
+            <h3 style="margin-bottom: 1rem; color: #1f2937;">The Climate Reality Project</h3>
+            <p>I was involved in the development of the Climate Reality Project's youth chapter in New Jersey website during high school. Unfortunately, due to external factors, the website and codebase have since been shut down.</p>
+        </div>
+    </div>
+
+    <!-- Investment Management Modal -->
+    <div id="investmentModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeInvestmentModal()">&times;</span>
+            <h3 style="margin-bottom: 1rem; color: #1f2937;">Investment Portfolio Scoring Framework</h3>
+            <p>The Investment Management Club at Georgia Tech currently employs private usage and sharing of its financial models.</p>
+        </div>
+    </div>
+
+    <!-- C21U Lab Modal -->
+    <div id="c21uModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeC21uModal()">&times;</span>
+            <h3 style="margin-bottom: 1rem; color: #1f2937;">Data-Driven Education at C21U Lab</h3>
+            <p>I was involved as the lead ML+Data Engineer of the Discussion Forums subteam, who sought to leverage Georgia Tech's EdStem course data to improve instructors' abilities to understand students' comments and concerns. The codebase is restricted within GT's GitHub Enterprise due to the research's use of PII data. Below is a poster presentation of what my team accomplished that I presented at the Undergraduate Research Symposium in April 2025.</p>
+            <div style="margin-top: 1.5rem;">
+                <a href="DDE_UROP_Apr2025.pdf" target="_blank" style="color: #003057; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border: 2px solid #003057; border-radius: 8px; display: inline-block; transition: all 0.3s ease;">Poster</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="page-content">
+            <p>&copy; 2024 Ethan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Add/remove home-page class for footer styling
+            if (pageId === 'home') {
+                document.body.classList.add('home-page');
+            } else {
+                document.body.classList.remove('home-page');
+            }
+            
+            // Update navigation active state
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            // Add active class to current nav item (except home)
+            if (pageId !== 'home') {
+                const activeLink = document.querySelector(`[onclick="showPage('${pageId}')"]`);
+                if (activeLink && activeLink.classList.contains('nav-links')) {
+                    activeLink.classList.add('active');
+                }
+            }
+            
+            // Scroll to top when changing pages
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Update page title
+            document.title = pageId === 'home' ? 'Ethan - Portfolio' : `Ethan - ${pageId.charAt(0).toUpperCase() + pageId.slice(1)}`;
+        }
+
+        // Handle navigation highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        // Dark mode toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const nav = document.querySelector('nav');
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+                localStorage.setItem('theme', 'dark');
+                // Immediately update nav background for dark mode
+                if (window.scrollY > 50) {
+                    nav.style.background = 'rgba(30, 41, 59, 0.98)';
+                } else {
+                    nav.style.background = 'rgba(30, 41, 59, 0.95)';
+                }
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+                localStorage.setItem('theme', 'light');
+                // Immediately update nav background for light mode
+                if (window.scrollY > 50) {
+                    nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    nav.style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+            }
+        }
+
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const nav = document.querySelector('nav');
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+                // Set initial nav background for dark mode
+                if (window.scrollY > 50) {
+                    nav.style.background = 'rgba(30, 41, 59, 0.98)';
+                } else {
+                    nav.style.background = 'rgba(30, 41, 59, 0.95)';
+                }
+            }
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            if (window.scrollY > 50) {
+                if (isDarkMode) {
+                    nav.style.background = 'rgba(30, 41, 59, 0.98)';
+                } else {
+                    nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                }
+                nav.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                if (isDarkMode) {
+                    nav.style.background = 'rgba(30, 41, 59, 0.95)';
+                } else {
+                    nav.style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Climate Reality Project modal functions
+        function showClimateModal(event) {
+            event.preventDefault();
+            document.getElementById('climateModal').style.display = 'block';
+        }
+
+        function closeClimateModal() {
+            document.getElementById('climateModal').style.display = 'none';
+        }
+
+        // Investment Management modal functions
+        function showInvestmentModal(event) {
+            event.preventDefault();
+            document.getElementById('investmentModal').style.display = 'block';
+        }
+
+        function closeInvestmentModal() {
+            document.getElementById('investmentModal').style.display = 'none';
+        }
+
+        // C21U Lab modal functions
+        function showC21uModal(event) {
+            event.preventDefault();
+            document.getElementById('c21uModal').style.display = 'block';
+        }
+
+        function closeC21uModal() {
+            document.getElementById('c21uModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const climateModal = document.getElementById('climateModal');
+            const investmentModal = document.getElementById('investmentModal');
+            const c21uModal = document.getElementById('c21uModal');
+            
+            if (event.target === climateModal) {
+                climateModal.style.display = 'none';
+            }
+            if (event.target === investmentModal) {
+                investmentModal.style.display = 'none';
+            }
+            if (event.target === c21uModal) {
+                c21uModal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
