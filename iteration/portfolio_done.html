@@ -11,20 +11,6 @@
             box-sizing: border-box;
         }
 
-        @font-face {
-            font-family: 'Handwriting';
-            src: url('handwriting.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'EthanSans';
-            src: url('Ethansans-Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
@@ -225,18 +211,6 @@
             color: #B3A369;
         }
 
-        body.dark-mode #portfolio h3 {
-            color: #FFFFFF;
-        }
-
-        body.dark-mode #playground p {
-            color: #FFFFFF;
-        }
-
-        body.dark-mode #font-download-link {
-            color: #B3A369 !important;
-        }
-
         body.dark-mode .skill-card {
             background: #1e293b;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -315,15 +289,13 @@
         }
 
         .hero h1 {
-            font-family: 'EthanSans', cursive;
-            font-size: clamp(3rem, 6vw, 5rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             margin-bottom: 1rem;
             font-weight: 700;
         }
 
         .hero p {
-            font-family: 'EthanSans', cursive;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             margin-bottom: 2rem;
             opacity: 0.9;
         }
@@ -491,11 +463,6 @@
             margin-top: 2rem;
         }
 
-        #playground .skills-grid {
-            grid-template-columns: 200px;
-            justify-content: start;
-        }
-
         .skill-card {
             background: white;
             padding: 2rem;
@@ -537,10 +504,6 @@
             text-align: center;
             padding: 1rem 0;
             margin-top: 2rem;
-        }
-
-        body.home-page footer {
-            margin-top: 0;
         }
 
         /* Mobile Responsiveness */
@@ -654,7 +617,7 @@
         }
     </style>
 </head>
-<body class="home-page">
+<body>
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
@@ -707,8 +670,8 @@
     <div id="home" class="page active">
         <section class="hero">
             <div class="hero-content">
-                <h1>Hey, I'm Ethan!</h1>
-                <p>"Be present above all else." (Naval Ravikant)</p>
+                <h1>Hello, I'm Ethan</h1>
+                <p>A passionate developer creating amazing digital experiences</p>
                 <a href="#" class="cta-button" onclick="showPage('portfolio')">View My Work</a>
             </div>
         </section>
@@ -802,7 +765,7 @@
                     <div class="project-content">
                         <h4>Homelessness Prediction Model</h4>
                         <p>Achieved 0.86 AUC predictive accuracy in forecasting homelessness trends in U.S. cities. Developed binomial logistic growth model to analyze complex socioeconomic datasets using Pandas and MATLAB for MathWorks Math Modeling Challenge.</p>
-                        <a href="Solution%20Paper%20Team%20%2317395.pdf" target="_blank" class="project-link">View Project →</a>
+                        <a href="#" class="project-link">View Project →</a>
                     </div>
                 </div>
             </div>
@@ -829,12 +792,48 @@
         <div class="page-content">
             <h2 class="page-title">Playground</h2>
             <p style="text-align: center; font-size: 1.1rem; color: #6b7280; margin-bottom: 3rem;">
-                Welcome to my play—initiate-deliberate-innovate-cultivate-evaluate-contemplate-iterate-validate—ground, or mostly just my playground.
+                Here are some of the technologies and skills I work with. This is where I experiment with new ideas and push the boundaries of what's possible.
             </p>
             <div class="skills-grid">
                 <div class="skill-card">
-                    <h4 style="font-family: 'EthanSans', sans-serif; font-size: 1.6rem;">My Font</h4>
-                    <p style="font-family: 'EthanSans', sans-serif; font-size: 1.3rem;">Click <a href="Ethansans-Regular.ttf" download style="color: #003057; text-decoration: underline; font-family: 'EthanSans', sans-serif;" id="font-download-link">here</a> to download a copy of my handwriting!</p>
+                    <div class="skill-icon">🎨</div>
+                    <h4>UI/UX Design</h4>
+                    <p>Creating intuitive and beautiful user interfaces with tools like Figma, Adobe XD, and Sketch</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">💻</div>
+                    <h4>Frontend Development</h4>
+                    <p>Building responsive web applications with React, Vue.js, HTML5, CSS3, and JavaScript</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">⚙️</div>
+                    <h4>Backend Development</h4>
+                    <p>Developing robust server-side solutions with Node.js, Python, and various databases</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">📱</div>
+                    <h4>Mobile Development</h4>
+                    <p>Creating native and cross-platform mobile apps with React Native and Flutter</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">☁️</div>
+                    <h4>Cloud Services</h4>
+                    <p>Deploying and managing applications on AWS, Google Cloud, and Azure platforms</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🤖</div>
+                    <h4>Machine Learning</h4>
+                    <p>Implementing AI solutions with TensorFlow, PyTorch, and scikit-learn</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🔧</div>
+                    <h4>DevOps</h4>
+                    <p>Streamlining development workflows with Docker, Kubernetes, and CI/CD pipelines</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🗃️</div>
+                    <h4>Database Design</h4>
+                    <p>Designing efficient data structures with SQL and NoSQL databases like PostgreSQL and MongoDB</p>
                 </div>
             </div>
         </div>
@@ -885,13 +884,6 @@
             
             // Show selected page
             document.getElementById(pageId).classList.add('active');
-            
-            // Add/remove home-page class for footer styling
-            if (pageId === 'home') {
-                document.body.classList.add('home-page');
-            } else {
-                document.body.classList.remove('home-page');
-            }
             
             // Update navigation active state
             const navLinks = document.querySelectorAll('.nav-links a');
