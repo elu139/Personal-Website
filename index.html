@@ -837,6 +837,10 @@
                     <h4 style="font-family: 'EthanSans', sans-serif; font-size: 1.6rem;">My Font</h4>
                     <p style="font-family: 'EthanSans', sans-serif; font-size: 1.3rem;">Click <a href="Ethansans-Regular.ttf" download style="color: #003057; text-decoration: underline; font-family: 'EthanSans', sans-serif;" id="font-download-link">here</a> to download a copy of my handwriting!</p>
                 </div>
+                <div class="skill-card" style="cursor: pointer;" onclick="showLovartModal(event)">
+                    <h4 style="font-family: 'EthanSans', sans-serif; font-size: 1.6rem;">Made with Lov(art)</h4>
+                    <p style="font-family: 'EthanSans', sans-serif; font-size: 1.1rem;">Click to see a comparison from my Barcelona adventure!</p>
+                </div>
             </div>
         </div>
     </div>
@@ -867,6 +871,25 @@
             <p>I was involved as the lead ML+Data Engineer of the Discussion Forums subteam, who sought to leverage Georgia Tech's EdStem course data to improve instructors' abilities to understand students' comments and concerns. The codebase is restricted within GT's GitHub Enterprise due to the research's use of PII data. Below is a poster presentation of what my team accomplished that I presented at the Undergraduate Research Symposium in April 2025.</p>
             <div style="margin-top: 1.5rem;">
                 <a href="DDE_UROP_Apr2025.pdf" target="_blank" style="color: #003057; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border: 2px solid #003057; border-radius: 8px; display: inline-block; transition: all 0.3s ease;">Poster</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lov(art) Modal -->
+    <div id="lovartModal" class="modal">
+        <div class="modal-content" style="max-width: 800px; margin: 10% auto 0; position: static;">
+            <span class="modal-close" onclick="closeLovartModal()">&times;</span>
+            <h3 style="margin-bottom: 1rem; color: #1f2937;">Made with Lov(art)</h3>
+            <p style="margin-bottom: 1.5rem; line-height: 1.6;">Late night homework back at Tech has me reminiscing about my amazing experiences while studying abroad in Barcelona during the summer. Here's a side-by-side comparison of me at Parc de la Ciutadella and my Hirono-esque doppelgänger generated using Lovart.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px; text-align: center;">
+                    <img src="extra/20250725_235144_A24D7F.JPEG" alt="Ethan at Parc de la Ciutadella, Barcelona" style="width: 100%; max-width: 300px; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #6b7280;">Parc de la Ciutadella, Barcelona -- July 2025</p>
+                </div>
+                <div style="flex: 1; min-width: 300px; text-align: center;">
+                    <img src="extra/Authentic Hirono-Style Figurine.png" alt="Hirono-style figurine with my expression" style="width: 100%; max-width: 300px; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #6b7280;">Hey Twin! 🤞</p>
+                </div>
             </div>
         </div>
     </div>
@@ -1028,11 +1051,22 @@
             document.getElementById('c21uModal').style.display = 'none';
         }
 
+        // Lovart modal functions
+        function showLovartModal(event) {
+            event.preventDefault();
+            document.getElementById('lovartModal').style.display = 'block';
+        }
+
+        function closeLovartModal() {
+            document.getElementById('lovartModal').style.display = 'none';
+        }
+
         // Close modal when clicking outside of it
         window.onclick = function(event) {
             const climateModal = document.getElementById('climateModal');
             const investmentModal = document.getElementById('investmentModal');
             const c21uModal = document.getElementById('c21uModal');
+            const lovartModal = document.getElementById('lovartModal');
             
             if (event.target === climateModal) {
                 climateModal.style.display = 'none';
@@ -1042,6 +1076,9 @@
             }
             if (event.target === c21uModal) {
                 c21uModal.style.display = 'none';
+            }
+            if (event.target === lovartModal) {
+                lovartModal.style.display = 'none';
             }
         }
     </script>
