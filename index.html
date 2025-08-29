@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ethan - Portfolio</title>
     <link rel="icon" type="image/jpeg" href="extra/IMG_2184.jpg">
+    <link rel="stylesheet" href="spotify-styles.css">
     <style>
         * {
             margin: 0;
@@ -493,8 +494,9 @@
         }
 
         #playground .skills-grid {
-            grid-template-columns: 200px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             justify-content: start;
+            gap: 2rem;
         }
 
         .skill-card {
@@ -841,6 +843,8 @@
                     <h4 style="font-family: 'EthanSans', sans-serif; font-size: 1.6rem;">Made with Lov(art)</h4>
                     <p style="font-family: 'EthanSans', sans-serif; font-size: 1.1rem;">Click to see a comparison from my Barcelona adventure!</p>
                 </div>
+                <!-- Spotify Favorites Card -->
+                <div id="spotify-favorites-container"></div>
             </div>
         </div>
     </div>
@@ -1081,6 +1085,261 @@
                 lovartModal.style.display = 'none';
             }
         }
+
+        // Sample tracks data
+        const SAMPLE_TRACKS = [
+            {
+                name: "Good 4 U",
+                artists: [{ name: "Olivia Rodrigo" }],
+                album: {
+                    name: "SOUR",
+                    images: [{ url: "https://i.scdn.co/image/ab67616d0000b273a91c10fe9472d9bd89802e5a" }]
+                },
+                preview_url: "https://p.scdn.co/mp3-preview/6b00a73b0cd8b70b8f3e6e8a35d9f32c8b1c1c1c",
+                external_urls: { spotify: "https://open.spotify.com/track/4ZtFanR9U6ndgddUvNcjcG" }
+            },
+            {
+                name: "Blinding Lights",
+                artists: [{ name: "The Weeknd" }],
+                album: {
+                    name: "After Hours",
+                    images: [{ url: "https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36" }]
+                },
+                preview_url: null,
+                external_urls: { spotify: "https://open.spotify.com/track/0VjIjW4GlUoHFzDD7TOSam" }
+            },
+            {
+                name: "As It Was",
+                artists: [{ name: "Harry Styles" }],
+                album: {
+                    name: "Harry's House",
+                    images: [{ url: "https://i.scdn.co/image/ab67616d0000b273919e8d87b0dffc8d41b50da2" }]
+                },
+                preview_url: "https://p.scdn.co/mp3-preview/8b1c1c1c4e9e1c0e8a3e3e8e8e8e8e8e8e8e8e8e",
+                external_urls: { spotify: "https://open.spotify.com/track/4Dvkj6JhhA12EX05fT7y2e" }
+            },
+            {
+                name: "Stay",
+                artists: [{ name: "The Kid LAROI" }, { name: "Justin Bieber" }],
+                album: {
+                    name: "F*CK LOVE 3: OVER YOU",
+                    images: [{ url: "https://i.scdn.co/image/ab67616d0000b273fc915b69600616c2c2540ff9" }]
+                },
+                preview_url: "https://p.scdn.co/mp3-preview/1c1c1c1c8b0e8a3e3e8e8e8e8e8e8e8e8e8e8e8e",
+                external_urls: { spotify: "https://open.spotify.com/track/5HCyWlXZPP0y6Gqq8TgA20" }
+            }
+        ];
+
+        // Initialize Spotify Player
+        let currentAudio = null;
+        let currentButton = null;
+
+        let isAuthenticated = false;
+        let userTracks = [];
+
+        function createSpotifyCard() {
+            return `
+                <div class="skill-card spotify-card" style="background: linear-gradient(135deg, #1DB954 0%, #191414 100%); color: white; padding: 1.5rem; min-height: 300px;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 0.75rem;">
+                        <div style="color: #1DB954;">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.301.421-1.02.599-1.559.3z"/>
+                            </svg>
+                        </div>
+                        <h4 style="color: white; margin: 0; font-weight: 600;">
+                            ${isAuthenticated ? 'My Favorites' : 'Sample Favorites'}
+                        </h4>
+                        ${!isAuthenticated ? `
+                        <button onclick="authenticateSpotify()" style="background: #1DB954; color: white; border: none; border-radius: 20px; padding: 0.4rem 0.8rem; font-size: 0.8rem; cursor: pointer; margin-left: auto;" title="Connect to see your real favorites">
+                            Connect Spotify
+                        </button>
+                        ` : ''}
+                    </div>
+                    <div id="spotify-tracks-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        ${(isAuthenticated ? userTracks : SAMPLE_TRACKS).map((track, index) => createTrackHTML(track, index)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function authenticateSpotify() {
+            const CLIENT_ID = '8a3126a54a8c4a4d805d95495b5b930b';
+            
+            // Always use the Netlify URL for authentication
+            const REDIRECT_URI = 'https://ethanlu.netlify.app';
+            const SCOPES = 'user-read-recently-played user-top-read user-read-currently-playing';
+            
+            const authUrl = `https://accounts.spotify.com/authorize?` +
+                `response_type=token&` +
+                `client_id=${CLIENT_ID}&` +
+                `scope=${encodeURIComponent(SCOPES)}&` +
+                `redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+            
+            // Inform user they need to deploy first
+            if (window.location.protocol === 'file:') {
+                alert('To connect Spotify, you need to deploy your site to Netlify first, then test the feature there. The sample tracks work fine for local testing!');
+                return;
+            }
+            
+            window.location.href = authUrl;
+        }
+
+        async function fetchUserTopTracks(accessToken) {
+            try {
+                const response = await fetch('https://api.spotify.com/v1/me/top/tracks?limit=4&time_range=short_term', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user tracks');
+                }
+
+                const data = await response.json();
+                userTracks = data.items;
+                isAuthenticated = true;
+                
+                // Refresh the card with user's real tracks
+                const container = document.getElementById('spotify-favorites-container');
+                if (container) {
+                    container.innerHTML = createSpotifyCard();
+                }
+                
+                console.log('Successfully loaded your top tracks!');
+            } catch (error) {
+                console.error('Error fetching user tracks:', error);
+            }
+        }
+
+        // Check for access token on page load (after Spotify redirect)
+        function checkForSpotifyToken() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+            
+            if (accessToken) {
+                // Clean up URL
+                window.location.hash = '';
+                
+                // Fetch user's real tracks
+                fetchUserTopTracks(accessToken);
+            }
+        }
+
+        function createTrackHTML(track, index) {
+            const hasPreview = track.preview_url !== null;
+            return `
+                <div class="track-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: 8px; background: rgba(255, 255, 255, 0.1); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'">
+                    <div style="position: relative; width: 50px; height: 50px; border-radius: 8px; overflow: hidden; flex-shrink: 0;">
+                        <img src="${track.album.images[0]?.url || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23ddd"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="%23999">♪</text></svg>'}" alt="${track.album.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+                        <div class="play-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                            <button class="play-button" onclick="togglePlay('${track.preview_url}', this, ${index})" style="background: ${hasPreview ? '#1DB954' : '#666'}; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: ${hasPreview ? 'pointer' : 'not-allowed'}; color: white; ${!hasPreview ? 'opacity: 0.6;' : ''}" ${!hasPreview ? 'disabled' : ''} title="${hasPreview ? 'Play preview' : 'No preview available'}">
+                                ${hasPreview ? '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>' : '🔇'}
+                            </button>
+                        </div>
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-weight: 600; font-size: 0.9rem; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.25rem;" title="${track.name}">${track.name}</div>
+                        <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${track.artists.map(a => a.name).join(', ')}">${track.artists.map(a => a.name).join(', ')}</div>
+                    </div>
+                    <div style="flex-shrink: 0;">
+                        <a href="${track.external_urls.spotify}" target="_blank" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1DB954'; this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.7)'; this.style.background='transparent'" title="Open in Spotify">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.301.421-1.02.599-1.559.3z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function togglePlay(previewUrl, button, trackIndex) {
+            if (previewUrl === 'null' || !previewUrl) {
+                button.innerHTML = '🔇';
+                button.title = 'No preview available';
+                setTimeout(() => {
+                    button.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>';
+                    button.title = 'Play preview';
+                }, 2000);
+                return;
+            }
+
+            if (currentAudio && !currentAudio.paused) {
+                currentAudio.pause();
+                if (currentButton) {
+                    currentButton.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>';
+                    currentButton.style.background = '#1DB954';
+                }
+                
+                if (currentButton === button) {
+                    currentAudio = null;
+                    currentButton = null;
+                    return;
+                }
+            }
+
+            currentAudio = new Audio(previewUrl);
+            currentAudio.volume = 0.7;
+            currentButton = button;
+
+            button.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+            button.style.background = '#ff6b6b';
+
+            currentAudio.addEventListener('ended', () => {
+                button.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>';
+                button.style.background = '#1DB954';
+                currentAudio = null;
+                currentButton = null;
+            });
+
+            currentAudio.addEventListener('error', () => {
+                button.innerHTML = '🔇';
+                button.title = 'Preview unavailable';
+                setTimeout(() => {
+                    button.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>';
+                    button.title = 'Play preview';
+                }, 2000);
+                currentAudio = null;
+                currentButton = null;
+            });
+
+            currentAudio.play();
+        }
+
+        async function initSpotify() {
+            const container = document.getElementById('spotify-favorites-container');
+            if (container && !container.innerHTML.trim()) {
+                // Check for Spotify auth token first
+                checkForSpotifyToken();
+                
+                // Then create the card
+                container.innerHTML = createSpotifyCard();
+            }
+        }
+
+        // Initialize Spotify when playground page is shown
+        function initializePlayground() {
+            const playgroundPage = document.getElementById('playground');
+            if (playgroundPage.classList.contains('active')) {
+                initSpotify();
+            }
+        }
+
+        // Enhanced showPage function to initialize Spotify when needed
+        const originalShowPage = showPage;
+        showPage = function(pageId) {
+            originalShowPage(pageId);
+            if (pageId === 'playground') {
+                // Small delay to ensure page is fully rendered
+                setTimeout(initializePlayground, 100);
+            }
+        };
+
+        // Initialize on page load if playground is the active page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePlayground();
+        });
     </script>
 </body>
 </html>

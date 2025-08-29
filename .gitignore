@@ -1,0 +1,13 @@
+# Spotify API secrets (keep private)
+spotify-secrets.js
+
+# Node modules (if using npm later)
+node_modules/
+
+# Environment files
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
