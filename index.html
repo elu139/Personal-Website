@@ -1163,30 +1163,11 @@
         }
 
         function authenticateSpotify() {
-            const CLIENT_ID = '8a3126a54a8c4a4d805d95495b5b930b';
+            // For now, show a message that this requires backend setup
+            alert('🎵 Spotify Authentication Info:\n\nTo connect your real Spotify account, this would require server-side authentication (backend API).\n\nFor now, enjoy these sample tracks with working 30-second previews!\n\nThe preview playback functionality works exactly the same with real tracks.');
             
-            // Use current page URL as redirect
-            const REDIRECT_URI = window.location.origin + window.location.pathname;
-            const SCOPES = 'user-read-recently-played user-top-read user-read-currently-playing';
-            
-            // Save current page state to return to playground
-            localStorage.setItem('spotify-return-page', 'playground');
-            
-            const authUrl = `https://accounts.spotify.com/authorize?` +
-                `response_type=token&` +
-                `client_id=${CLIENT_ID}&` +
-                `scope=${encodeURIComponent(SCOPES)}&` +
-                `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
-                `state=playground`; // Add state parameter to track page
-            
-            // Inform user they need to deploy first
-            if (window.location.protocol === 'file:') {
-                alert('To connect Spotify, you need to deploy your site to Netlify first, then test the feature there. The sample tracks work fine for local testing!');
-                return;
-            }
-            
-            console.log('Redirecting to Spotify with URL:', REDIRECT_URI);
-            window.location.href = authUrl;
+            // Keep the sample tracks visible
+            return;
         }
 
         async function fetchUserTopTracks(accessToken) {
@@ -1217,26 +1198,10 @@
             }
         }
 
-        // Check for access token on page load (after Spotify redirect)
+        // No token checking needed for sample tracks
         function checkForSpotifyToken() {
-            const hash = window.location.hash.substring(1);
-            const params = new URLSearchParams(hash);
-            const accessToken = params.get('access_token');
-            const state = params.get('state');
-            
-            if (accessToken) {
-                // Clean up URL
-                window.location.hash = '';
-                
-                // Navigate to the correct page
-                if (state === 'playground' || localStorage.getItem('spotify-return-page') === 'playground') {
-                    showPage('playground');
-                    localStorage.removeItem('spotify-return-page');
-                }
-                
-                // Fetch user's real tracks
-                fetchUserTopTracks(accessToken);
-            }
+            // Sample tracks only - no authentication needed
+            return;
         }
 
         function createTrackHTML(track, index) {
