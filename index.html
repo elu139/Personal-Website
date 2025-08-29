@@ -1165,15 +1165,19 @@
         function authenticateSpotify() {
             const CLIENT_ID = '8a3126a54a8c4a4d805d95495b5b930b';
             
-            // Always use the Netlify URL for authentication
-            const REDIRECT_URI = 'https://ethanlu.netlify.app';
+            // Use current page URL as redirect
+            const REDIRECT_URI = window.location.origin + window.location.pathname;
             const SCOPES = 'user-read-recently-played user-top-read user-read-currently-playing';
+            
+            // Save current page state to return to playground
+            localStorage.setItem('spotify-return-page', 'playground');
             
             const authUrl = `https://accounts.spotify.com/authorize?` +
                 `response_type=token&` +
                 `client_id=${CLIENT_ID}&` +
                 `scope=${encodeURIComponent(SCOPES)}&` +
-                `redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+                `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
+                `state=playground`; // Add state parameter to track page
             
             // Inform user they need to deploy first
             if (window.location.protocol === 'file:') {
@@ -1181,6 +1185,7 @@
                 return;
             }
             
+            console.log('Redirecting to Spotify with URL:', REDIRECT_URI);
             window.location.href = authUrl;
         }
 
@@ -1217,10 +1222,17 @@
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash);
             const accessToken = params.get('access_token');
+            const state = params.get('state');
             
             if (accessToken) {
                 // Clean up URL
                 window.location.hash = '';
+                
+                // Navigate to the correct page
+                if (state === 'playground' || localStorage.getItem('spotify-return-page') === 'playground') {
+                    showPage('playground');
+                    localStorage.removeItem('spotify-return-page');
+                }
                 
                 // Fetch user's real tracks
                 fetchUserTopTracks(accessToken);
