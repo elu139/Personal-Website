@@ -1049,7 +1049,19 @@
     <!-- Scroll to Top Button -->
     <button class="scroll-to-top" id="scrollToTopBtn" title="Back to top">
         <svg class="rocket-icon" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-            <path d="M12,2A1,1 0 0,1 13,3V9.17C13.5,9.06 14,9 14.5,9A5.5,5.5 0 0,1 20,14.5A5.5,5.5 0 0,1 14.5,20C14,20 13.5,19.94 13,19.83V21A1,1 0 0,1 12,22A1,1 0 0,1 11,21V19.83C10.5,19.94 10,20 9.5,20A5.5,5.5 0 0,1 4,14.5A5.5,5.5 0 0,1 9.5,9C10,9 10.5,9.06 11,9.17V3A1,1 0 0,1 12,2M9.5,11A2.5,2.5 0 0,0 7,13.5A2.5,2.5 0 0,0 9.5,16A2.5,2.5 0 0,0 12,13.5A2.5,2.5 0 0,0 9.5,11M14.5,11A2.5,2.5 0 0,0 12,13.5A2.5,2.5 0 0,0 14.5,16A2.5,2.5 0 0,0 17,13.5A2.5,2.5 0 0,0 14.5,11Z"/>
+            <!-- Rocket Body -->
+            <path d="M12 2L12 2C13.1 2 14 2.9 14 4V12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12V4C10 2.9 10.9 2 12 2Z"/>
+            <!-- Rocket Fins -->
+            <path d="M8 12L10 12V16L8 14V12Z"/>
+            <path d="M16 12L14 12V16L16 14V12Z"/>
+            <!-- Rocket Nose -->
+            <path d="M12 2L10 4L14 4Z"/>
+            <!-- Engine/Thruster -->
+            <rect x="10.5" y="14" width="3" height="2" rx="0.5"/>
+            <!-- Flames -->
+            <path d="M11 16L11 19L12 22L13 19L13 16" opacity="0.8"/>
+            <!-- Window -->
+            <circle cx="12" cy="8" r="1.5" fill="rgba(255,255,255,0.3)"/>
         </svg>
         <div class="smoke-trail">
             <div class="smoke-puff"></div>
