@@ -655,6 +655,154 @@
         body.dark-mode .modal-close:hover {
             color: #f9fafb;
         }
+
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #003057;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 48, 87, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1500;
+            overflow: hidden;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 48, 87, 0.4);
+            background: #B3A369;
+        }
+
+        .scroll-to-top.show {
+            display: flex;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        .scroll-to-top.hide {
+            animation: slideOutDown 0.3s ease-in forwards;
+        }
+
+        .scroll-to-top.animate {
+            animation: rocketLaunch 0.6s ease-out;
+        }
+
+        body.dark-mode .scroll-to-top {
+            background: #EEEAE3;
+            color: #0f172a;
+            box-shadow: 0 4px 20px rgba(238, 234, 227, 0.3);
+        }
+
+        body.dark-mode .scroll-to-top:hover {
+            background: #B3A369;
+            color: white;
+            box-shadow: 0 6px 25px rgba(179, 163, 105, 0.4);
+        }
+
+        /* Rocket Icon */
+        .rocket-icon {
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .scroll-to-top:hover .rocket-icon {
+            transform: translateY(-2px);
+        }
+
+        /* Smoke Trail Animation */
+        .smoke-trail {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 30px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .smoke-puff {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(179, 163, 105, 0.6);
+            border-radius: 50%;
+            animation: smokePuff 1s ease-out forwards;
+        }
+
+        .smoke-puff:nth-child(1) { animation-delay: 0s; left: 6px; }
+        .smoke-puff:nth-child(2) { animation-delay: 0.2s; left: 12px; }
+        .smoke-puff:nth-child(3) { animation-delay: 0.4s; left: 8px; }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideOutDown {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        }
+
+        @keyframes rocketLaunch {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes smokePuff {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-15px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(1.5);
+            }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .scroll-to-top {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 1.3rem;
+            }
+        }
     </style>
 </head>
 <body class="home-page">
@@ -897,6 +1045,18 @@
             </div>
         </div>
     </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTopBtn" title="Back to top">
+        <svg class="rocket-icon" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path d="M12,2A1,1 0 0,1 13,3V9.17C13.5,9.06 14,9 14.5,9A5.5,5.5 0 0,1 20,14.5A5.5,5.5 0 0,1 14.5,20C14,20 13.5,19.94 13,19.83V21A1,1 0 0,1 12,22A1,1 0 0,1 11,21V19.83C10.5,19.94 10,20 9.5,20A5.5,5.5 0 0,1 4,14.5A5.5,5.5 0 0,1 9.5,9C10,9 10.5,9.06 11,9.17V3A1,1 0 0,1 12,2M9.5,11A2.5,2.5 0 0,0 7,13.5A2.5,2.5 0 0,0 9.5,16A2.5,2.5 0 0,0 12,13.5A2.5,2.5 0 0,0 9.5,11M14.5,11A2.5,2.5 0 0,0 12,13.5A2.5,2.5 0 0,0 14.5,16A2.5,2.5 0 0,0 17,13.5A2.5,2.5 0 0,0 14.5,11Z"/>
+        </svg>
+        <div class="smoke-trail">
+            <div class="smoke-puff"></div>
+            <div class="smoke-puff"></div>
+            <div class="smoke-puff"></div>
+        </div>
+    </button>
 
     <!-- Footer -->
     <footer>
@@ -1317,6 +1477,82 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializePlayground();
         });
+
+        // Scroll to Top Button Functionality
+        let scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        let isScrollingUp = false;
+
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', function() {
+            const currentPage = document.querySelector('.page.active');
+
+            // Only show on Portfolio page and when scrolled down 300px
+            if (currentPage && currentPage.id === 'portfolio' && window.pageYOffset > 300) {
+                if (!scrollToTopBtn.classList.contains('show')) {
+                    scrollToTopBtn.classList.remove('hide');
+                    scrollToTopBtn.classList.add('show');
+                }
+            } else {
+                if (scrollToTopBtn.classList.contains('show')) {
+                    scrollToTopBtn.classList.remove('show');
+                    scrollToTopBtn.classList.add('hide');
+
+                    // Clean up hide class after animation
+                    setTimeout(() => {
+                        scrollToTopBtn.classList.remove('hide');
+                    }, 300);
+                }
+            }
+        });
+
+        // Scroll to top with animation when button is clicked
+        scrollToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Add rocket launch animation
+            scrollToTopBtn.classList.add('animate');
+
+            // Show smoke trail
+            const smokeTrail = scrollToTopBtn.querySelector('.smoke-trail');
+            smokeTrail.style.opacity = '1';
+
+            // Create new smoke puffs for animation
+            const smokePuffs = smokeTrail.querySelectorAll('.smoke-puff');
+            smokePuffs.forEach((puff, index) => {
+                // Reset animation
+                puff.style.animation = 'none';
+                puff.offsetHeight; // Trigger reflow
+                puff.style.animation = `smokePuff 1s ease-out forwards`;
+                puff.style.animationDelay = `${index * 0.2}s`;
+            });
+
+            // Smooth scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            // Reset animations after completion
+            setTimeout(() => {
+                scrollToTopBtn.classList.remove('animate');
+                smokeTrail.style.opacity = '0';
+            }, 600);
+        });
+
+        // Enhanced showPage function to handle scroll button visibility
+        const originalShowPageForScroll = showPage;
+        showPage = function(pageId) {
+            originalShowPageForScroll(pageId);
+
+            // Reset scroll position and hide button when changing pages
+            if (scrollToTopBtn.classList.contains('show')) {
+                scrollToTopBtn.classList.remove('show');
+                scrollToTopBtn.classList.add('hide');
+                setTimeout(() => {
+                    scrollToTopBtn.classList.remove('hide');
+                }, 300);
+            }
+        };
     </script>
 </body>
 </html>
