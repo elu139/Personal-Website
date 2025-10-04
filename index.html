@@ -722,27 +722,69 @@
         /* Smoke Trail Animation */
         .smoke-trail {
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
-            height: 30px;
+            width: 60px;
+            height: 80px;
             opacity: 0;
             pointer-events: none;
         }
 
         .smoke-puff {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: rgba(179, 163, 105, 0.6);
+            background: radial-gradient(circle, rgba(255, 140, 0, 0.9) 0%, rgba(255, 69, 0, 0.6) 50%, rgba(255, 165, 0, 0.2) 100%);
             border-radius: 50%;
-            animation: smokePuff 1s ease-out forwards;
+            animation: smokePuff 1.5s ease-out forwards;
         }
 
-        .smoke-puff:nth-child(1) { animation-delay: 0s; left: 6px; }
-        .smoke-puff:nth-child(2) { animation-delay: 0.2s; left: 12px; }
-        .smoke-puff:nth-child(3) { animation-delay: 0.4s; left: 8px; }
+        .smoke-puff:nth-child(1) {
+            width: 12px;
+            height: 12px;
+            animation-delay: 0s;
+            left: 24px;
+            bottom: 0px;
+        }
+        .smoke-puff:nth-child(2) {
+            width: 16px;
+            height: 16px;
+            animation-delay: 0.15s;
+            left: 18px;
+            bottom: 5px;
+        }
+        .smoke-puff:nth-child(3) {
+            width: 14px;
+            height: 14px;
+            animation-delay: 0.3s;
+            left: 30px;
+            bottom: 8px;
+        }
+        .smoke-puff:nth-child(4) {
+            width: 18px;
+            height: 18px;
+            animation-delay: 0.45s;
+            left: 15px;
+            bottom: 12px;
+        }
+        .smoke-puff:nth-child(5) {
+            width: 20px;
+            height: 20px;
+            animation-delay: 0.6s;
+            left: 25px;
+            bottom: 15px;
+        }
+        .smoke-puff:nth-child(6) {
+            width: 16px;
+            height: 16px;
+            animation-delay: 0.75s;
+            left: 35px;
+            bottom: 18px;
+        }
+
+        /* Dark mode smoke - keep same orange fire colors */
+        body.dark-mode .smoke-puff {
+            background: radial-gradient(circle, rgba(255, 140, 0, 0.9) 0%, rgba(255, 69, 0, 0.6) 50%, rgba(255, 165, 0, 0.2) 100%);
+        }
 
         @keyframes slideInUp {
             from {
@@ -781,15 +823,23 @@
         @keyframes smokePuff {
             0% {
                 opacity: 0;
-                transform: translateY(0) scale(0.5);
+                transform: translateY(0) translateX(0) scale(0.3) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-10px) translateX(0) scale(0.8) rotate(45deg);
             }
             50% {
-                opacity: 1;
-                transform: translateY(-15px) scale(1);
+                opacity: 0.8;
+                transform: translateY(-25px) translateX(5px) scale(1.2) rotate(90deg);
+            }
+            80% {
+                opacity: 0.4;
+                transform: translateY(-40px) translateX(-3px) scale(1.8) rotate(135deg);
             }
             100% {
                 opacity: 0;
-                transform: translateY(-30px) scale(1.5);
+                transform: translateY(-60px) translateX(8px) scale(2.5) rotate(180deg);
             }
         }
 
@@ -1064,6 +1114,9 @@
             <circle cx="12" cy="8" r="1.5" fill="rgba(255,255,255,0.3)"/>
         </svg>
         <div class="smoke-trail">
+            <div class="smoke-puff"></div>
+            <div class="smoke-puff"></div>
+            <div class="smoke-puff"></div>
             <div class="smoke-puff"></div>
             <div class="smoke-puff"></div>
             <div class="smoke-puff"></div>
@@ -1534,8 +1587,8 @@
                 // Reset animation
                 puff.style.animation = 'none';
                 puff.offsetHeight; // Trigger reflow
-                puff.style.animation = `smokePuff 1s ease-out forwards`;
-                puff.style.animationDelay = `${index * 0.2}s`;
+                puff.style.animation = `smokePuff 1.5s ease-out forwards`;
+                puff.style.animationDelay = `${index * 0.15}s`;
             });
 
             // Smooth scroll to top
