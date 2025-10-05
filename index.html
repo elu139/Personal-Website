@@ -697,6 +697,10 @@
             animation: rocketLaunch 0.6s ease-out;
         }
 
+        .scroll-to-top.launching .rocket-icon {
+            animation: rocketFlyUp 1.2s ease-out;
+        }
+
         body.dark-mode .scroll-to-top {
             background: #EEEAE3;
             color: #0f172a;
@@ -713,6 +717,8 @@
         .rocket-icon {
             transition: all 0.3s ease;
             transform-origin: center;
+            transform: translateY(0) scale(1);
+            opacity: 1;
         }
 
         .scroll-to-top:hover .rocket-icon {
@@ -817,6 +823,29 @@
             }
             100% {
                 transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes rocketFlyUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            20% {
+                transform: translateY(-15px) scale(1.1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-40px) scale(0.8);
+                opacity: 0.8;
+            }
+            80% {
+                transform: translateY(-80px) scale(0.5);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-120px) scale(0.2);
+                opacity: 0;
             }
         }
 
@@ -1126,7 +1155,7 @@
     <!-- Footer -->
     <footer>
         <div class="page-content">
-            <p>&copy; 2024 Ethan. All rights reserved.</p>
+            <p>&copy; 2025 Ethan. All rights reserved.</p>
         </div>
     </footer>
 
@@ -1574,34 +1603,51 @@
         scrollToTopBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // Add rocket launch animation
-            scrollToTopBtn.classList.add('animate');
-
-            // Show smoke trail
+            const rocketIcon = scrollToTopBtn.querySelector('.rocket-icon');
             const smokeTrail = scrollToTopBtn.querySelector('.smoke-trail');
-            smokeTrail.style.opacity = '1';
 
-            // Create new smoke puffs for animation
-            const smokePuffs = smokeTrail.querySelectorAll('.smoke-puff');
-            smokePuffs.forEach((puff, index) => {
-                // Reset animation
-                puff.style.animation = 'none';
-                puff.offsetHeight; // Trigger reflow
-                puff.style.animation = `smokePuff 1.5s ease-out forwards`;
-                puff.style.animationDelay = `${index * 0.15}s`;
-            });
+            // First, ensure rocket is reset before starting
+            rocketIcon.style.animation = 'none';
+            rocketIcon.style.transform = 'translateY(0) scale(1)';
+            rocketIcon.style.opacity = '1';
+            scrollToTopBtn.classList.remove('launching');
+            rocketIcon.offsetHeight; // Force reflow
 
-            // Smooth scroll to top
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-
-            // Reset animations after completion
+            // Start rocket launch sequence after a tiny delay
             setTimeout(() => {
-                scrollToTopBtn.classList.remove('animate');
-                smokeTrail.style.opacity = '0';
-            }, 600);
+                scrollToTopBtn.classList.add('launching');
+
+                // Show smoke trail immediately as rocket launches
+                smokeTrail.style.opacity = '1';
+
+                // Create expanding smoke/fire trail
+                const smokePuffs = smokeTrail.querySelectorAll('.smoke-puff');
+                smokePuffs.forEach((puff, index) => {
+                    // Reset animation
+                    puff.style.animation = 'none';
+                    puff.offsetHeight; // Trigger reflow
+                    puff.style.animation = `smokePuff 2s ease-out forwards`;
+                    puff.style.animationDelay = `${index * 0.1}s`;
+                });
+
+                // Smooth scroll to top (starts immediately)
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
+                // Reset rocket after launch animation completes
+                setTimeout(() => {
+                    // Complete reset
+                    rocketIcon.style.animation = 'none';
+                    rocketIcon.style.transform = 'translateY(0) scale(1)';
+                    rocketIcon.style.opacity = '1';
+                    scrollToTopBtn.classList.remove('launching');
+
+                    // Fade out smoke trail
+                    smokeTrail.style.opacity = '0';
+                }, 1200);
+            }, 10); // Small delay to ensure reset happens first
         });
 
         // Enhanced showPage function to handle scroll button visibility
