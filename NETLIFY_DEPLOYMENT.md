@@ -10,8 +10,8 @@ Go to your Netlify dashboard: https://app.netlify.com/sites/ethanlu/settings/dep
 2. Add these variables:
 
 ```
-SPOTIFY_CLIENT_ID = 8a3126a54a8c4a4d805d95495b5b930b
-SPOTIFY_CLIENT_SECRET = d4b86fe5dfb941e999caaa2e1dc17fb5
+SPOTIFY_CLIENT_ID = your_client_id_here
+SPOTIFY_CLIENT_SECRET = your_client_secret_here
 REDIRECT_URI = https://ethanlu.netlify.app/.netlify/functions/spotify-callback
 URL = https://ethanlu.netlify.app
 ```
