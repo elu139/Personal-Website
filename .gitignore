@@ -1,8 +1,11 @@
 # Spotify API secrets (keep private)
 spotify-secrets.js
 
-# Node modules (if using npm later)
+# Node modules
 node_modules/
+
+# Vite build output
+dist/
 
 # Environment files
 .env

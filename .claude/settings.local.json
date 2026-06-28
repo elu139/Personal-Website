@@ -1,7 +1,21 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(npm -v)",
+      "Bash(ls netlify/functions/)",
+      "Bash(mkdir -p public src/components src/design legacy)",
+      "Bash(cp index.html legacy/index.legacy.html)",
+      "Bash(mv extra *)",
+      "Bash(cp LuEthan-Resume.pdf m3_paper.pdf DDE_UROP_Apr2025.pdf Ethansans-Regular.ttf public/)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(mkdir -p legacy/netlify-functions)",
+      "Bash(mv netlify/functions/*.js legacy/netlify-functions/)",
+      "Bash(rmdir netlify/functions netlify)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(git checkout *)"
     ],
     "deny": [],
     "ask": []
