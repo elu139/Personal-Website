@@ -7,6 +7,7 @@ import Skills from './components/Skills'
 import Resume from './components/Resume'
 import Playground from './components/Playground'
 import Contact from './components/Contact'
+import { MountainBand, WaterDivider } from './components/SceneDividers'
 
 // One continuous journey downward through natural landscapes.
 const LIGHT_WASH =
@@ -51,8 +52,10 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <MountainBand />
         <Projects />
         <Skills />
+        <WaterDivider />
         <Resume />
         <Playground />
         <Contact />

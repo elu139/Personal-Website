@@ -1,7 +1,8 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { motion, useInView } from 'framer-motion'
 import SectionHeading from './SectionHeading'
 import Modal from './Modal'
+import PlaygroundAtmosphere from '../design/PlaygroundAtmosphere'
 import { favoriteTracks } from '../data'
 
 function PlayCard({ children, className = '', onClick, delay = 0 }) {
@@ -24,12 +25,21 @@ function PlayCard({ children, className = '', onClick, delay = 0 }) {
 
 export default function Playground() {
   const [lovart, setLovart] = useState(false)
+  const atmoRef = useRef(null)
+  // Mount the canvas atmosphere only when the section is near view so its
+  // animation loop doesn't run (and burn frames) while far offscreen.
+  const atmoInView = useInView(atmoRef, { margin: '300px' })
 
   return (
     <section
       id="playground"
       className="section-anchor relative mx-auto max-w-6xl px-6 py-24 sm:py-32"
     >
+      {/* Claude Design — drifting firefly atmosphere */}
+      <div ref={atmoRef} className="absolute inset-0 -z-10">
+        {atmoInView && <PlaygroundAtmosphere className="absolute inset-0" />}
+      </div>
+
       <SectionHeading eyebrow="things I'm tinkering with" title="Playground" />
       <p className="mx-auto mb-12 max-w-2xl text-center text-stone-600 dark:text-stone-300">
         Welcome to my play—initiate-deliberate-innovate-cultivate-evaluate-contemplate-iterate-validate—ground,

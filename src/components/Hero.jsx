@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import HeroAnimation from '../design/HeroAnimation'
+import { DuskVeil } from './SceneDividers'
 
 export default function Hero() {
   return (
@@ -7,8 +8,9 @@ export default function Hero() {
       id="home"
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
     >
-      {/* PLACEHOLDER FOR CLAUDE DESIGN — animated dawn-sky background */}
+      {/* Claude Design — animated dawn-sky background */}
       <HeroAnimation />
+      <DuskVeil className="-z-10" />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
