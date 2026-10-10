@@ -3,70 +3,38 @@
 @tailwind utilities;
 
 @font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader-latin.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
   font-family: 'EthanSans';
-  src: url('/Ethansans-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  src: url('/fonts/ethansans.ttf') format('truetype');
   font-display: swap;
 }
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+html { scroll-behavior: smooth; }
+body { @apply bg-[#05070f] font-sans text-cream antialiased; }
+::selection { background: rgba(240, 179, 126, 0.35); }
+section[id] { scroll-margin-top: 5rem; }
 
-  body {
-    @apply bg-cream text-stone-700 font-sans antialiased;
-    overflow-x: hidden;
-  }
-
-  .dark body {
-    @apply bg-night text-stone-200;
-  }
-
-  /* Respect reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
+/* same palette as the painting, so the swap-in is seamless */
+.backdrop {
+  background: linear-gradient(180deg, #05070f 0%, #111936 16%, #3d4d7d 33%, #a583a0 43%, #e0a873 49%,
+    #8a7099 55%, #584a72 62%, #463d58 70%, #3f4a3a 78%, #42583b 86%, #34462e 100%);
 }
 
-@layer components {
-  /* Section anchor offset so fixed nav doesn't cover headings */
-  .section-anchor {
-    scroll-margin-top: 5rem;
-  }
+.panel { @apply rounded-3xl bg-[#0a0d1a]/75 p-6 shadow-2xl shadow-black/30 ring-1 ring-white/10 sm:p-10; }
 
-  /* Soft, organic "blob" radius used on cards & images */
-  .blob {
-    border-radius: 42% 58% 56% 44% / 48% 42% 58% 52%;
-  }
-  .blob-2 {
-    border-radius: 58% 42% 44% 56% / 56% 58% 42% 44%;
-  }
+.twinkle { animation: twinkle ease-in-out infinite alternate; }
+.drift { animation: drift ease-in-out infinite alternate; }
+.footprint { position: absolute; width: 11px; height: 19px; animation: footprint 4.4s ease forwards; }
+@keyframes twinkle { from { opacity: 0.25; } to { opacity: 1; } }
+@keyframes drift { from { transform: translateX(-4vw); } to { transform: translateX(4vw); } }
+@keyframes footprint { 0% { opacity: 0; } 8%, 55% { opacity: 0.8; } 100% { opacity: 0; } }
 
-  .pill {
-    @apply inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300;
-  }
-}
-
-/* Custom soft scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(122, 158, 126, 0.4);
-  border-radius: 999px;
-}
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(184, 169, 212, 0.35);
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
