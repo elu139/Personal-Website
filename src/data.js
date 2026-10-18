@@ -100,11 +100,12 @@ export const projects = [
   },
 ]
 
+// pos: [left %, top %, tilt°] on the desktop photo table
 export const photos = [
-  { src: '/img/cdmx.webp', w: 1000, h: 750, cap: "CDMX, Spring '26" },
-  { src: '/img/opo.webp', w: 1000, h: 1333, cap: "OPO, Summer '25" },
-  { src: '/img/atl.webp', w: 1000, h: 666, cap: "ATL, Spring '25" },
-  { src: '/img/sta.webp', w: 1000, h: 750, cap: "St. A, Summer '26" },
-  { src: '/img/nj.webp', w: 1000, h: 1333, cap: "NJ, Summer '24" },
-  { src: '/img/sav.webp', w: 1000, h: 684, cap: "SAV, Winter '25" },
+  { src: '/img/cdmx.webp', pos: [2, 4, -6], w: 1000, h: 750, cap: "CDMX, Spring '26" },
+  { src: '/img/opo.webp', pos: [26, 0, 4], w: 1000, h: 1333, cap: "OPO, Summer '25" },
+  { src: '/img/atl.webp', pos: [49, 9, -3], w: 1000, h: 666, cap: "ATL, Spring '25" },
+  { src: '/img/sta.webp', pos: [73, 2, 6], w: 1000, h: 750, cap: "St. A, Summer '26" },
+  { src: '/img/nj.webp', pos: [13, 40, 3], w: 1000, h: 1333, cap: "NJ, Summer '24" },
+  { src: '/img/sav.webp', pos: [57, 48, -5], w: 1000, h: 684, cap: "SAV, Winter '25" },
 ]
