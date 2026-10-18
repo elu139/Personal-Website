@@ -5,12 +5,13 @@ import { SplitText } from 'gsap/SplitText'
 import { Draggable } from 'gsap/Draggable'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
-import { Backdrop, Footprints } from './Backdrop.jsx'
+import { Backdrop } from './Backdrop.jsx'
 import { RESUME, links, skills, experience, leadership, projects, photos } from './data.js'
 
 gsap.registerPlugin(ScrollTrigger, SplitText, Draggable)
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches
+const wrap = 'mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-16'
 
 // Runs GSAP setup scoped to the returned ref; everything it creates is reverted on unmount.
 function useGsap(setup) {
@@ -22,6 +23,10 @@ function useGsap(setup) {
   }, [])
   return ref
 }
+
+// Pieces drift up out of a blur (react-bits BlurText); no clipping masks, so ascenders and descenders stay whole.
+const blurIn = (targets, vars) =>
+  gsap.from(targets, { yPercent: 35, autoAlpha: 0, filter: 'blur(12px)', duration: 1.3, ease: 'expo.out', ...vars })
 
 const toc = [
   ['about', 'A Bit About Me', 'About'],
@@ -45,19 +50,17 @@ function Nav() {
     return () => io.disconnect()
   }, [])
 
+  const pill = 'rounded-full bg-[#070914]/55 ring-1 ring-white/10 backdrop-blur-md'
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div ref={bar} className="h-px origin-left scale-x-0 bg-dusk" />
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
-        <a href="#top" className="rounded-full bg-[#070914]/55 px-4 py-1 font-hand text-2xl text-cream ring-1 ring-white/10 backdrop-blur-md">ethan lu</a>
-        <div className="flex items-center gap-2 rounded-full bg-[#070914]/55 p-1 pl-2 ring-1 ring-white/10 backdrop-blur-md">
+      <nav className={`${wrap} flex items-center justify-between py-4`}>
+        <a href="#top" className={`${pill} px-4 py-1 font-hand text-2xl text-cream`}>ethan lu</a>
+        <div className={`${pill} flex items-center gap-2 p-1 pl-2`}>
           <ul className="hidden text-sm md:flex">
             {toc.map(([id, , label]) => (
               <li key={id}>
-                <a
-                  href={`#${id}`}
-                  className={`relative block rounded-full px-3 py-1.5 transition-colors ${active === id ? 'text-cream' : 'text-mist hover:text-cream'}`}
-                >
+                <a href={`#${id}`} className={`relative block rounded-full px-3 py-1.5 transition-colors ${active === id ? 'text-cream' : 'text-mist hover:text-cream'}`}>
                   {label}
                   <span className={`absolute inset-x-3 -bottom-0.5 h-px origin-left bg-dusk transition-transform duration-500 ${active === id ? 'scale-x-100' : 'scale-x-0'}`} />
                 </a>
@@ -75,12 +78,12 @@ function Nav() {
 
 function Hero() {
   const ref = useGsap((el) => {
-    const name = SplitText.create('.hero-name', { type: 'chars', mask: 'chars' })
-    gsap.timeline({ defaults: { ease: 'expo.out', duration: 1.4 } })
-      .from('.hero-hi', { y: 14, autoAlpha: 0, duration: 1 })
-      .from(name.chars, { yPercent: 110, stagger: 0.05 }, 0.15)
-      .from('.hero-toc > *', { y: 14, autoAlpha: 0, stagger: 0.07, duration: 1 }, 0.7)
-      .from('.hero-cue', { autoAlpha: 0, duration: 1.2 }, 1.4)
+    const name = SplitText.create('.hero-name', { type: 'chars' })
+    gsap.timeline()
+      .add(blurIn('.hero-hi', { yPercent: 60 }))
+      .add(blurIn(name.chars, { stagger: 0.06, duration: 1.6 }), 0.15)
+      .add(blurIn('.hero-toc > *', { stagger: 0.07, yPercent: 60 }), 0.8)
+      .add(blurIn('.hero-cue', { yPercent: 0 }), 1.5)
     gsap.to('.hero-inner', {
       yPercent: -20, autoAlpha: 0, ease: 'none',
       scrollTrigger: { trigger: el, start: 'top top', end: 'bottom top', scrub: true },
@@ -88,13 +91,13 @@ function Hero() {
   })
   return (
     <section ref={ref} id="top" className="relative min-h-svh">
-      <div className="hero-inner mx-auto flex min-h-svh max-w-6xl flex-col justify-center px-5 pt-20 sm:px-8">
+      <div className={`hero-inner ${wrap} flex min-h-svh flex-col justify-center pt-20`}>
         <p className="hero-hi font-hand text-2xl text-dusk sm:text-3xl">Hey there, I'm</p>
-        <h1 className="hero-name mt-1 font-display text-[clamp(4.5rem,16vw,11rem)] font-medium leading-[0.9] tracking-tight">Ethan Lu</h1>
-        <nav aria-label="Contents" className="hero-toc mt-14 flex flex-col">
+        <h1 className="hero-name font-display text-[clamp(4.5rem,17vw,15rem)] font-medium leading-[1] tracking-tight">Ethan Lu</h1>
+        <nav aria-label="Contents" className="hero-toc mt-12 flex flex-col">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-sage">Contents</p>
           {toc.map(([id, title], i) => (
-            <a key={id} href={`#${id}`} className="group flex items-baseline gap-4 self-start py-1 text-xl text-cream/75 transition-colors hover:text-cream sm:text-2xl">
+            <a key={id} href={`#${id}`} className="group flex items-baseline gap-4 self-start py-1 text-xl text-cream/80 transition-colors hover:text-cream sm:text-2xl">
               <span className="w-5 font-hand text-dusk">{i + 1}</span>
               <span className="font-display transition-transform duration-300 group-hover:translate-x-2">{title}</span>
             </a>
@@ -109,18 +112,17 @@ function Hero() {
   )
 }
 
-// Every section gets the same motion vocabulary: masked title words rising, [data-reveal]
-// blocks fading up, and [data-speed] elements drifting at their own parallax rate.
+// Shared motion vocabulary: title words blur in, [data-reveal] blocks rise, [data-speed] elements parallax.
 function Section({ id, n, title, children }) {
   const ref = useGsap((el) => {
     const h2 = el.querySelector('h2')
     SplitText.create(h2, {
-      type: 'words', mask: 'words', autoSplit: true,
-      onSplit: (s) => gsap.from(s.words, { yPercent: 105, stagger: 0.07, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: h2, start: 'top 88%' } }),
+      type: 'words', autoSplit: true,
+      onSplit: (s) => blurIn(s.words, { stagger: 0.08, scrollTrigger: { trigger: h2, start: 'top 88%' } }),
     })
-    gsap.from(el.querySelector('.sec-n'), { autoAlpha: 0, x: -12, duration: 1, scrollTrigger: { trigger: h2, start: 'top 88%' } })
+    blurIn(el.querySelector('.sec-n'), { yPercent: 0, scrollTrigger: { trigger: h2, start: 'top 88%' } })
     gsap.utils.toArray('[data-reveal]', el).forEach((r) =>
-      gsap.from(r, { y: 36, autoAlpha: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: r, start: 'top 90%' } }),
+      gsap.from(r, { y: 40, autoAlpha: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: r, start: 'top 90%' } }),
     )
     gsap.utils.toArray('[data-speed]', el).forEach((p) =>
       gsap.fromTo(p, { yPercent: 12 * p.dataset.speed }, {
@@ -130,14 +132,12 @@ function Section({ id, n, title, children }) {
     )
   })
   return (
-    <section ref={ref} id={id} className="mist py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <header className="mb-14 flex items-baseline gap-5 sm:mb-20">
-          <span className="sec-n font-hand text-2xl text-dusk sm:text-3xl">{n}</span>
-          <h2 className="font-display text-[clamp(2.6rem,7vw,5.5rem)] font-medium leading-[0.95] tracking-tight">{title}</h2>
-        </header>
-        {children}
-      </div>
+    <section ref={ref} id={id} className={`${wrap} py-16`}>
+      <header className="mb-14 flex items-baseline gap-5 sm:mb-24">
+        <span className="sec-n font-hand text-2xl text-dusk sm:text-4xl">{n}</span>
+        <h2 className="font-display text-[clamp(2.75rem,8vw,7.5rem)] font-medium leading-[1.05] tracking-tight">{title}</h2>
+      </header>
+      {children}
     </section>
   )
 }
@@ -147,7 +147,7 @@ function ScrubText({ className, children }) {
   const ref = useGsap((el) => {
     SplitText.create(el, {
       type: 'words', autoSplit: true,
-      onSplit: (s) => gsap.fromTo(s.words, { opacity: 0.18 }, {
+      onSplit: (s) => gsap.fromTo(s.words, { opacity: 0.2 }, {
         opacity: 1, stagger: 0.1, ease: 'none',
         scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 50%', scrub: true },
       }),
@@ -159,28 +159,28 @@ function ScrubText({ className, children }) {
 function About() {
   return (
     <Section id="about" n="1" title={toc[0][1]}>
-      <div className="grid gap-16 lg:grid-cols-[1.35fr_1fr]">
+      <div className="grid gap-16 lg:grid-cols-[1.5fr_1fr] lg:gap-24">
         <div>
-          <ScrubText className="font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-snug">
+          <ScrubText className="font-display text-[clamp(1.75rem,3.4vw,3.25rem)] leading-[1.2]">
             I'm a third-year CS+Econ student at Georgia Tech, specializing in artificial intelligence, data science, and
             econometrics.
           </ScrubText>
-          <p data-reveal className="mt-8 max-w-2xl text-lg leading-relaxed text-cream/80">
+          <p data-reveal className="mt-10 max-w-3xl text-lg leading-relaxed text-cream/85 sm:text-xl">
             I love to fully immerse myself in the AI-product space, where I can bridge the liminal space between{' '}
-            <span className="font-hand text-2xl text-dusk">"no longer"</span> and <span className="font-hand text-2xl text-dusk">"not yet."</span>{' '}
-            I've chosen to trailblaze a path of innovation that optimizes human experience, streamlines everyday activities, and
-            empowers others to achieve their goals.
+            <span className="font-hand text-2xl text-dusk sm:text-3xl">"no longer"</span> and{' '}
+            <span className="font-hand text-2xl text-dusk sm:text-3xl">"not yet."</span> I've chosen to trailblaze a path of
+            innovation that optimizes human experience, streamlines everyday activities, and empowers others to achieve their goals.
           </p>
-          <dl data-reveal className="mt-12 divide-y divide-white/10 border-y border-white/10">
+          <dl data-reveal className="mt-14 max-w-3xl divide-y divide-white/15 border-y border-white/15">
             {skills.map(([k, v]) => (
-              <div key={k} className="grid gap-1 py-3 sm:grid-cols-[8rem_1fr] sm:gap-6">
+              <div key={k} className="grid gap-1 py-3.5 sm:grid-cols-[9rem_1fr] sm:gap-6">
                 <dt className="text-sm text-sage">{k}</dt>
-                <dd className="text-mist">{v}</dd>
+                <dd className="text-cream/80">{v}</dd>
               </div>
             ))}
           </dl>
         </div>
-        <div className="relative mx-auto h-[30rem] w-full max-w-sm">
+        <div className="relative mx-auto h-[32rem] w-full max-w-md">
           <Polaroid src="/img/portrait.webp" w={800} h={1151} cap="BCN, Summer '25" className="absolute left-0 top-0 w-[60%] -rotate-3" speed={1.4} />
           <Polaroid src="/img/prague.webp" w={800} h={600} cap="PRG, Summer '25" className="absolute bottom-4 right-0 w-[66%] rotate-3" speed={0.6} />
         </div>
@@ -191,34 +191,55 @@ function About() {
 
 function Polaroid({ src, w, h, cap, className = '', speed, style }) {
   return (
-    <figure data-speed={speed} style={style} className={`bg-[#f4efe4] p-2 pb-0 shadow-2xl shadow-black/50 ${className}`}>
+    <figure data-speed={speed} style={style} className={`bg-[#f4efe4] p-2 pb-0 shadow-2xl shadow-black/50 [text-shadow:none] ${className}`}>
       <img src={src} width={w} height={h} alt={cap} loading="lazy" decoding="async" draggable={false} className="w-full" />
       <figcaption className="py-2 text-center font-hand text-lg text-ink/80">{cap}</figcaption>
     </figure>
   )
 }
 
+// Scrollytelling: the company list stays pinned on the left and lights up whichever story is in view.
 function Experience() {
+  const [active, setActive] = useState(0)
+  const ref = useRef(null)
+  useLayoutEffect(() => {
+    const triggers = gsap.utils.toArray('[data-job]', ref.current).map((el, i) =>
+      ScrollTrigger.create({ trigger: el, start: 'top 60%', end: 'bottom 60%', onToggle: (t) => t.isActive && setActive(i) }),
+    )
+    return () => triggers.forEach((t) => t.kill())
+  }, [])
+
   return (
     <Section id="experience" n="2" title={toc[1][1]}>
-      <ol className="border-t border-white/15">
-        {experience.map((job) => (
-          <li key={job.org} data-reveal className="grid gap-4 border-b border-white/15 py-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:gap-12">
-            <div>
+      <div ref={ref} className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-24">
+        <ol className="sticky top-32 hidden self-start md:block">
+          {experience.map((job, i) => (
+            <li key={job.org} className={`border-t border-white/15 py-5 transition-opacity duration-500 ${active === i ? 'opacity-100' : 'opacity-45'}`}>
               <p className="text-sm tabular-nums text-mist">{job.when}</p>
-              <h3 className="mt-2 font-display text-3xl leading-tight sm:text-4xl">{job.org}</h3>
+              <h3 className="mt-1 font-display text-3xl leading-tight lg:text-5xl">{job.org}</h3>
               <p className="mt-1 text-dusk">{job.role}</p>
-            </div>
-            <p className="text-lg leading-relaxed text-cream/80">{job.desc}</p>
-          </li>
-        ))}
-      </ol>
-      <div data-reveal className="mt-12 flex flex-wrap items-baseline gap-x-10 gap-y-3">
-        <span className="font-hand text-xl text-sage">also —</span>
+            </li>
+          ))}
+        </ol>
+        <div>
+          {experience.map((job) => (
+            <article key={job.org} data-job className="flex flex-col justify-center border-t border-white/15 py-8 md:min-h-[45vh] md:border-0 md:py-0">
+              <div className="mb-4 md:hidden">
+                <p className="text-sm tabular-nums text-mist">{job.when}</p>
+                <h3 className="mt-1 font-display text-3xl leading-tight">{job.org}</h3>
+                <p className="mt-1 text-dusk">{job.role}</p>
+              </div>
+              <p data-reveal className="text-lg leading-relaxed text-cream/90 lg:text-2xl lg:leading-relaxed">{job.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+      <div data-reveal className="mt-16 flex flex-wrap items-baseline gap-x-10 gap-y-3 border-t border-white/15 pt-8">
+        <span className="font-hand text-2xl text-sage">also —</span>
         {leadership.map((l) => (
-          <p key={l.org}>
-            <span className="text-cream">{l.role}</span>, <span className="text-mist">{l.org}</span>{' '}
-            <span className="text-sm text-mist/70">({l.when})</span>
+          <p key={l.org} className="text-lg">
+            <span className="text-cream">{l.role}</span>, <span className="text-cream/75">{l.org}</span>{' '}
+            <span className="text-sm text-mist">({l.when})</span>
           </p>
         ))}
       </div>
@@ -256,16 +277,16 @@ function Projects() {
             <li key={p.title} data-reveal onPointerEnter={() => setActive(i)} className="transition-opacity duration-300 group-hover/list:opacity-40 hover:!opacity-100">
               <Tag
                 {...(p.href && { href: p.href, target: '_blank', rel: 'noreferrer' })}
-                className="group grid grid-cols-[1.25rem_1fr_auto] items-baseline gap-x-3 border-b border-white/15 py-6 md:grid-cols-[3rem_1.2fr_1fr_auto] md:gap-x-8"
+                className="group grid grid-cols-[1.25rem_1fr_auto] items-baseline gap-x-3 border-b border-white/15 py-7 md:grid-cols-[3rem_1.3fr_1fr_auto] md:gap-x-10"
               >
                 <span className="font-hand text-lg text-dusk">{i + 1}</span>
                 <div>
-                  <h3 className="font-display text-2xl leading-tight transition-transform duration-500 group-hover:translate-x-2 sm:text-3xl">{p.title}</h3>
-                  <p className="mt-1 max-w-md text-mist">{p.blurb}</p>
+                  <h3 className="font-display text-2xl leading-tight transition-transform duration-500 group-hover:translate-x-2 sm:text-4xl">{p.title}</h3>
+                  <p className="mt-2 max-w-xl text-cream/75">{p.blurb}</p>
                   <img src={p.img} alt="" loading="lazy" decoding="async" className={`mt-4 aspect-[16/9] w-full rounded-md md:hidden ${p.contain ? 'bg-cream object-contain p-4' : 'object-cover'}`} />
                 </div>
-                <p className="hidden text-sm text-mist/80 md:block">{p.tags.join(' · ')}</p>
-                <span className={`text-sm text-mist transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-dusk ${p.href ? '' : 'invisible'}`}>
+                <p className="hidden text-sm text-cream/70 md:block">{p.tags.join(' · ')}</p>
+                <span className={`text-sm text-cream/80 transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-dusk ${p.href ? '' : 'invisible'}`}>
                   {p.linkLabel ?? 'GitHub'} ↗
                 </span>
               </Tag>
@@ -276,7 +297,7 @@ function Projects() {
       {finePointer && (
         <div ref={preview} aria-hidden="true" className="pointer-events-none fixed left-0 top-0 z-40">
           <div
-            className={`relative aspect-[16/10] w-80 translate-x-10 -translate-y-1/2 overflow-hidden rounded-lg shadow-2xl shadow-black/60 transition duration-300 ${
+            className={`relative aspect-[16/10] w-96 translate-x-10 -translate-y-1/2 overflow-hidden rounded-lg shadow-2xl shadow-black/60 transition duration-300 ${
               active === null ? 'scale-75 opacity-0' : 'scale-100 opacity-100'
             }`}
           >
@@ -320,17 +341,17 @@ function Life() {
     <Section id="life" n="4" title={toc[3][1]}>
       <div
         ref={table}
-        className="-mx-5 flex snap-x sm:-mx-8 sm:px-8 snap-mandatory gap-5 overflow-x-auto px-5 pb-4 [scrollbar-width:none] md:relative md:mx-0 md:block md:h-[38rem] md:overflow-visible md:px-0"
+        className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:-mx-10 sm:px-10 md:relative md:mx-0 md:block md:h-[44rem] md:overflow-visible md:px-0"
       >
         {photos.map((p) => (
           <Polaroid
             key={p.src}
             {...p}
             style={{ left: `${p.pos[0]}%`, top: `${p.pos[1]}%`, rotate: `${p.pos[2]}deg` }}
-            className={`shrink-0 snap-center md:absolute md:cursor-grab md:active:cursor-grabbing ${p.h > p.w ? 'w-40 md:w-52' : 'w-56 md:w-64'}`}
+            className={`shrink-0 snap-center md:absolute md:cursor-grab md:active:cursor-grabbing ${p.h > p.w ? 'w-40 md:w-52 xl:w-60' : 'w-56 md:w-64 xl:w-80'}`}
           />
         ))}
-        <p className="pointer-events-none absolute bottom-6 right-4 hidden -rotate-3 font-hand text-2xl text-mist md:block">
+        <p className="pointer-events-none absolute bottom-6 right-4 hidden -rotate-3 font-hand text-2xl text-cream/80 md:block">
           (go on, rearrange them)
         </p>
       </div>
@@ -367,23 +388,23 @@ function Contact() {
   })
   return (
     <Section id="contact" n="5" title={toc[4][1]}>
-      <p data-reveal className="max-w-xl text-lg leading-relaxed text-mist">
+      <p data-reveal className="max-w-xl text-lg leading-relaxed text-cream/85 sm:text-xl">
         Working on something in AI or product, or just want to swap travel recommendations? My inbox is open.
       </p>
       <div data-reveal className="mt-10">
         <Magnet>
-          <a href={`mailto:${links.email}`} className="inline-block break-all font-display text-[clamp(1.7rem,6vw,4.5rem)] leading-tight decoration-dusk decoration-1 underline-offset-[0.2em] transition-colors hover:text-dusk hover:underline">
+          <a href={`mailto:${links.email}`} className="inline-block break-all font-display text-[clamp(1.7rem,7vw,7rem)] leading-tight decoration-dusk decoration-1 underline-offset-[0.2em] transition-colors hover:text-dusk hover:underline">
             {links.email}
           </a>
         </Magnet>
-        <button onClick={copy} className="ml-1 mt-2 block font-hand text-xl text-mist transition-colors hover:text-cream">
+        <button onClick={copy} className="ml-1 mt-2 block font-hand text-2xl text-cream/75 transition-colors hover:text-cream">
           {copied ? 'copied ✓' : 'or copy it'}
         </button>
       </div>
-      <ul data-reveal className="mt-14 flex flex-wrap gap-x-10 gap-y-3 text-lg">
+      <ul data-reveal className="mt-14 flex flex-wrap gap-x-12 gap-y-3 text-xl">
         {[['LinkedIn', links.linkedin], ['GitHub', links.github], ['Résumé', RESUME]].map(([label, href]) => (
           <li key={label}>
-            <a href={href} target="_blank" rel="noreferrer" className="group text-cream/85 transition-colors hover:text-dusk">
+            <a href={href} target="_blank" rel="noreferrer" className="group text-cream/90 transition-colors hover:text-dusk">
               {label} <span className="inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
             </a>
           </li>
@@ -407,9 +428,8 @@ export default function App() {
   return (
     <div className="relative isolate overflow-x-clip">
       <Backdrop />
-      <Footprints />
       <Nav />
-      <main className="flex flex-col gap-[28vh]">
+      <main className="legible flex flex-col gap-[22vh]">
         <Hero />
         <About />
         <Experience />
@@ -417,9 +437,9 @@ export default function App() {
         <Life />
         <Contact />
       </main>
-      <footer className="flex flex-col items-center gap-2 pb-16 pt-[28vh] text-center font-hand text-lg text-cream/85">
+      <footer className="legible flex flex-col items-center gap-2 pb-16 pt-[24vh] text-center font-hand text-xl text-cream/90">
         <p>Thanks for walking with me · © {new Date().getFullYear()} Ethan Lu</p>
-        <a href="#top" className="text-mist transition-colors hover:text-cream">back to the stars ↑</a>
+        <a href="#top" className="text-cream/70 transition-colors hover:text-cream">back to the stars ↑</a>
       </footer>
     </div>
   )
