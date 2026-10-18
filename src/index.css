@@ -14,7 +14,6 @@
   font-display: swap;
 }
 
-html { scroll-behavior: smooth; }
 body { @apply bg-[#05070f] font-sans text-cream antialiased; }
 ::selection { background: rgba(240, 179, 126, 0.35); }
 section[id] { scroll-margin-top: 5rem; }
@@ -25,7 +24,20 @@ section[id] { scroll-margin-top: 5rem; }
     #8a7099 55%, #584a72 62%, #463d58 70%, #3f4a3a 78%, #42583b 86%, #34462e 100%);
 }
 
-.panel { @apply rounded-3xl bg-[#0a0d1a]/75 p-6 shadow-2xl shadow-black/30 ring-1 ring-white/10 sm:p-10; }
+/* a feathered band of frosted mist behind each chapter, so text reads while the painting still shows at the edges */
+.mist { position: relative; }
+.mist::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: rgba(6, 8, 18, 0.58);
+  backdrop-filter: blur(18px) saturate(1.15);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  --fade-y: linear-gradient(transparent, #000 9rem, #000 calc(100% - 9rem), transparent);
+  --fade-x: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: var(--fade-y), var(--fade-x);
+  mask-composite: intersect;
+  -webkit-mask-image: var(--fade-y), var(--fade-x);
+  -webkit-mask-composite: source-in;
+}
 
 .twinkle { animation: twinkle ease-in-out infinite alternate; }
 .drift { animation: drift ease-in-out infinite alternate; }
@@ -35,6 +47,5 @@ section[id] { scroll-margin-top: 5rem; }
 @keyframes footprint { 0% { opacity: 0; } 8%, 55% { opacity: 0.8; } 100% { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
