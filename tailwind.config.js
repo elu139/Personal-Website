@@ -14,6 +14,7 @@ export default {
         sans: ['ui-sans-serif', 'system-ui', '-apple-system', '"Segoe UI"', 'Roboto', 'sans-serif'],
         display: ['Newsreader', 'Georgia', 'serif'],
         hand: ['EthanSans', 'cursive'],
+        mono: ['"DM Mono"', 'ui-monospace', 'monospace'],
       },
     },
   },

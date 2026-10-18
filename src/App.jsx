@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText, Draggable)
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches
 const wrap = 'mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-16'
+const row = 'grid gap-x-10 gap-y-3 border-b border-white/15 md:grid-cols-[10rem_minmax(0,1fr)_minmax(0,1.25fr)]'
 
 // Runs GSAP setup scoped to the returned ref; everything it creates is reverted on unmount.
 function useGsap(setup) {
@@ -57,7 +58,7 @@ function Nav() {
       <nav className={`${wrap} flex items-center justify-between py-4`}>
         <a href="#top" className={`${pill} px-4 py-1 font-hand text-2xl text-cream`}>ethan lu</a>
         <div className={`${pill} flex items-center gap-2 p-1 pl-2`}>
-          <ul className="hidden text-sm md:flex">
+          <ul className="label hidden md:flex">
             {toc.map(([id, , label]) => (
               <li key={id}>
                 <a href={`#${id}`} className={`relative block rounded-full px-3 py-1.5 transition-colors ${active === id ? 'text-cream' : 'text-mist hover:text-cream'}`}>
@@ -67,7 +68,7 @@ function Nav() {
               </li>
             ))}
           </ul>
-          <a href={RESUME} target="_blank" rel="noreferrer" className="rounded-full bg-cream px-4 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-dusk">
+          <a href={RESUME} target="_blank" rel="noreferrer" className="label rounded-full bg-cream px-4 py-2 text-ink transition-colors hover:bg-dusk">
             Résumé
           </a>
         </div>
@@ -93,13 +94,13 @@ function Hero() {
     <section ref={ref} id="top" className="relative min-h-svh">
       <div className={`hero-inner ${wrap} flex min-h-svh flex-col justify-center pt-20`}>
         <p className="hero-hi font-hand text-2xl text-dusk sm:text-3xl">Hey there, I'm</p>
-        <h1 className="hero-name font-display text-[clamp(4.5rem,17vw,15rem)] font-medium leading-[1] tracking-tight">Ethan Lu</h1>
+        <h1 className="hero-name text-[clamp(4.5rem,17vw,15rem)] font-normal leading-[1] tracking-tight">Ethan Lu</h1>
         <nav aria-label="Contents" className="hero-toc mt-12 flex flex-col">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-sage">Contents</p>
+          <p className="label mb-4 text-sage">Contents</p>
           {toc.map(([id, title], i) => (
             <a key={id} href={`#${id}`} className="group flex items-baseline gap-4 self-start py-1 text-xl text-cream/80 transition-colors hover:text-cream sm:text-2xl">
-              <span className="w-5 font-hand text-dusk">{i + 1}</span>
-              <span className="font-display transition-transform duration-300 group-hover:translate-x-2">{title}</span>
+              <span className="label w-6 text-dusk">0{i + 1}</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-2">{title}</span>
             </a>
           ))}
         </nav>
@@ -133,9 +134,9 @@ function Section({ id, n, title, children }) {
   })
   return (
     <section ref={ref} id={id} className={`${wrap} py-16`}>
-      <header className="mb-14 flex items-baseline gap-5 sm:mb-24">
-        <span className="sec-n font-hand text-2xl text-dusk sm:text-4xl">{n}</span>
-        <h2 className="font-display text-[clamp(2.75rem,8vw,7.5rem)] font-medium leading-[1.05] tracking-tight">{title}</h2>
+      <header className="mb-14 sm:mb-24">
+        <p className="sec-n label text-dusk">0{n} — {toc.find((t) => t[0] === id)[2]}</p>
+        <h2 className="mt-4 text-[clamp(2.75rem,8vw,7.5rem)] font-normal leading-[1.05] tracking-tight">{title}</h2>
       </header>
       {children}
     </section>
@@ -174,8 +175,8 @@ function About() {
           <dl data-reveal className="mt-14 max-w-3xl divide-y divide-white/15 border-y border-white/15">
             {skills.map(([k, v]) => (
               <div key={k} className="grid gap-1 py-3.5 sm:grid-cols-[9rem_1fr] sm:gap-6">
-                <dt className="text-sm text-sage">{k}</dt>
-                <dd className="text-cream/80">{v}</dd>
+                <dt className="label pt-1 text-sage">{k}</dt>
+                <dd className="text-lg text-cream/85">{v}</dd>
               </div>
             ))}
           </dl>
@@ -193,56 +194,36 @@ function Polaroid({ src, w, h, cap, className = '', speed, style }) {
   return (
     <figure data-speed={speed} style={style} className={`bg-[#f4efe4] p-2 pb-0 shadow-2xl shadow-black/50 [text-shadow:none] ${className}`}>
       <img src={src} width={w} height={h} alt={cap} loading="lazy" decoding="async" draggable={false} className="w-full" />
-      <figcaption className="py-2 text-center font-hand text-lg text-ink/80">{cap}</figcaption>
+      <figcaption className="py-2 text-center font-hand text-xl text-ink/80">{cap}</figcaption>
     </figure>
   )
 }
 
-// Scrollytelling: the company list stays pinned on the left and lights up whichever story is in view.
 function Experience() {
-  const [active, setActive] = useState(0)
-  const ref = useRef(null)
-  useLayoutEffect(() => {
-    const triggers = gsap.utils.toArray('[data-job]', ref.current).map((el, i) =>
-      ScrollTrigger.create({ trigger: el, start: 'top 60%', end: 'bottom 60%', onToggle: (t) => t.isActive && setActive(i) }),
-    )
-    return () => triggers.forEach((t) => t.kill())
-  }, [])
-
   return (
     <Section id="experience" n="2" title={toc[1][1]}>
-      <div ref={ref} className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-24">
-        <ol className="sticky top-32 hidden self-start md:block">
-          {experience.map((job, i) => (
-            <li key={job.org} className={`border-t border-white/15 py-5 transition-opacity duration-500 ${active === i ? 'opacity-100' : 'opacity-45'}`}>
-              <p className="text-sm tabular-nums text-mist">{job.when}</p>
-              <h3 className="mt-1 font-display text-3xl leading-tight lg:text-5xl">{job.org}</h3>
-              <p className="mt-1 text-dusk">{job.role}</p>
-            </li>
-          ))}
-        </ol>
-        <div>
-          {experience.map((job) => (
-            <article key={job.org} data-job className="flex flex-col justify-center border-t border-white/15 py-8 md:min-h-[45vh] md:border-0 md:py-0">
-              <div className="mb-4 md:hidden">
-                <p className="text-sm tabular-nums text-mist">{job.when}</p>
-                <h3 className="mt-1 font-display text-3xl leading-tight">{job.org}</h3>
-                <p className="mt-1 text-dusk">{job.role}</p>
-              </div>
-              <p data-reveal className="text-lg leading-relaxed text-cream/90 lg:text-2xl lg:leading-relaxed">{job.desc}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-      <div data-reveal className="mt-16 flex flex-wrap items-baseline gap-x-10 gap-y-3 border-t border-white/15 pt-8">
-        <span className="font-hand text-2xl text-sage">also —</span>
-        {leadership.map((l) => (
-          <p key={l.org} className="text-lg">
-            <span className="text-cream">{l.role}</span>, <span className="text-cream/75">{l.org}</span>{' '}
-            <span className="text-sm text-mist">({l.when})</span>
-          </p>
+      <ol className="border-t border-white/15">
+        {experience.map((job) => (
+          <li key={job.org} data-reveal className={`${row} py-10`}>
+            <p className="label pt-2 text-cream/70">{job.when}</p>
+            <div>
+              <h3 className="text-3xl leading-tight sm:text-4xl">{job.org}</h3>
+              <p className="label mt-3 leading-relaxed text-dusk">{job.role}</p>
+            </div>
+            <p className="text-lg leading-relaxed text-cream/90">{job.desc}</p>
+          </li>
         ))}
-      </div>
+      </ol>
+      <p data-reveal className="label mt-20 text-sage">Leadership</p>
+      <ul className="mt-5 border-t border-white/15">
+        {leadership.map((l) => (
+          <li key={l.org} data-reveal className={`${row} py-6`}>
+            <p className="label pt-1.5 text-cream/70">{l.when}</p>
+            <p className="text-2xl">{l.role}</p>
+            <p className="text-lg text-cream/75 md:pt-1">{l.org}</p>
+          </li>
+        ))}
+      </ul>
     </Section>
   )
 }
@@ -277,18 +258,20 @@ function Projects() {
             <li key={p.title} data-reveal onPointerEnter={() => setActive(i)} className="transition-opacity duration-300 group-hover/list:opacity-40 hover:!opacity-100">
               <Tag
                 {...(p.href && { href: p.href, target: '_blank', rel: 'noreferrer' })}
-                className="group grid grid-cols-[1.25rem_1fr_auto] items-baseline gap-x-3 border-b border-white/15 py-7 md:grid-cols-[3rem_1.3fr_1fr_auto] md:gap-x-10"
+                className={`group ${row} py-8`}
               >
-                <span className="font-hand text-lg text-dusk">{i + 1}</span>
+                <span className="label pt-2 text-dusk">{String(i + 1).padStart(2, '0')}</span>
                 <div>
                   <h3 className="font-display text-2xl leading-tight transition-transform duration-500 group-hover:translate-x-2 sm:text-4xl">{p.title}</h3>
-                  <p className="mt-2 max-w-xl text-cream/75">{p.blurb}</p>
+                  <p className="mt-2 max-w-xl text-lg leading-relaxed text-cream/80">{p.blurb}</p>
                   <img src={p.img} alt="" loading="lazy" decoding="async" className={`mt-4 aspect-[16/9] w-full rounded-md md:hidden ${p.contain ? 'bg-cream object-contain p-4' : 'object-cover'}`} />
                 </div>
-                <p className="hidden text-sm text-cream/70 md:block">{p.tags.join(' · ')}</p>
-                <span className={`text-sm text-cream/80 transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-dusk ${p.href ? '' : 'invisible'}`}>
+                <div className="flex items-start justify-between gap-6 md:pt-2">
+                <p className="label leading-relaxed text-cream/70">{p.tags.join(' · ')}</p>
+                <span className={`label shrink-0 text-cream/80 transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-dusk ${p.href ? '' : 'invisible'}`}>
                   {p.linkLabel ?? 'GitHub'} ↗
                 </span>
+                </div>
               </Tag>
             </li>
           )
@@ -437,7 +420,7 @@ export default function App() {
         <Life />
         <Contact />
       </main>
-      <footer className="legible flex flex-col items-center gap-2 pb-16 pt-[24vh] text-center font-hand text-xl text-cream/90">
+      <footer className="legible flex flex-col items-center gap-2 pb-16 pt-[24vh] text-center font-hand text-2xl text-cream/90">
         <p>Thanks for walking with me · © {new Date().getFullYear()} Ethan Lu</p>
         <a href="#top" className="text-cream/70 transition-colors hover:text-cream">back to the stars ↑</a>
       </footer>
