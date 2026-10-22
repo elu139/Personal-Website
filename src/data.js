@@ -1,7 +1,7 @@
 export const RESUME = '/Ethan_Lu_Resume.pdf'
 
 export const links = {
-  email: 'ethanlu0929@gmail.com',
+  email: 'ethan.heng.lu@gmail.com',
   linkedin: 'https://www.linkedin.com/in/ethan-lu/',
   github: 'https://github.com/elu139',
 }
